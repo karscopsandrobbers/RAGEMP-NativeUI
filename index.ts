@@ -579,7 +579,7 @@ export default class NativeUI {
 					} else if (!uiMenuItem.Selected) {
 						this.CurrentSelection = i;
 						Common.PlaySound(this.AUDIO_UPDOWN, this.AUDIO_LIBRARY);
-						this.IndexChange.emit(this.CurrentSelection);
+						this.IndexChange.emit(this.CurrentSelection, this.MenuItems[this._activeItem % this.MenuItems.length]);
 						this.SelectItem();
 					} else if (!uiMenuItem.Enabled && uiMenuItem.Selected) {
 						Common.PlaySound(this.AUDIO_ERROR, this.AUDIO_LIBRARY);
@@ -741,7 +741,7 @@ export default class NativeUI {
 			this.MenuItems[this._activeItem % this.MenuItems.length].Selected = true;
 		}
 		Common.PlaySound(this.AUDIO_UPDOWN, this.AUDIO_LIBRARY);
-		this.IndexChange.emit(this.CurrentSelection);
+		this.IndexChange.emit(this.CurrentSelection, this.MenuItems[this._activeItem % this.MenuItems.length]);
 	}
 
 	public GoUp() {
@@ -750,7 +750,7 @@ export default class NativeUI {
 		this._activeItem--;
 		this.MenuItems[this._activeItem % this.MenuItems.length].Selected = true;
 		Common.PlaySound(this.AUDIO_UPDOWN, this.AUDIO_LIBRARY);
-		this.IndexChange.emit(this.CurrentSelection);
+		this.IndexChange.emit(this.CurrentSelection, this.MenuItems[this._activeItem % this.MenuItems.length]);
 	}
 
 	public GoDownOverflow() {
@@ -786,7 +786,7 @@ export default class NativeUI {
 			this.MenuItems[this._activeItem % this.MenuItems.length].Selected = true;
 		}
 		Common.PlaySound(this.AUDIO_UPDOWN, this.AUDIO_LIBRARY);
-		this.IndexChange.emit(this.CurrentSelection);
+		this.IndexChange.emit(this.CurrentSelection, this.MenuItems[this._activeItem % this.MenuItems.length]);
 	}
 
 	public GoDown() {
@@ -795,7 +795,7 @@ export default class NativeUI {
 		this._activeItem++;
 		this.MenuItems[this._activeItem % this.MenuItems.length].Selected = true;
 		Common.PlaySound(this.AUDIO_UPDOWN, this.AUDIO_LIBRARY);
-		this.IndexChange.emit(this.CurrentSelection);
+		this.IndexChange.emit(this.CurrentSelection, this.MenuItems[this._activeItem % this.MenuItems.length]);
 	}
 
 	public GoBack() {
