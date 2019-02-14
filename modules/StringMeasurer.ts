@@ -3,7 +3,7 @@ import ResText from "./ResText";
 
 export default class StringMeasurer {
 	public static MeasureStringWidthNoConvert(input: string) {
-		mp.game.ui.setTextEntryForWidth("STRING");
+		mp.game.ui.setTextEntryForWidth("THREESTRINGS");
 		ResText.AddLongString(input);
 		mp.game.ui.setTextFont(0);
 		mp.game.ui.setTextScale(0.35, 0.35);

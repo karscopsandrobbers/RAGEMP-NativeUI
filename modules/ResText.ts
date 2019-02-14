@@ -83,7 +83,7 @@ export default class ResText extends Text {
 		} else {
 			if (dropShadow) mp.game.ui.setTextDropshadow(2, 0, 0, 0, 0);
 
-			if (outline) console.warn("not working!");
+			if (outline) console.warn("outline not working!");
 
 			switch (textAlignment) {
 				case Alignment.Centered:
@@ -101,16 +101,29 @@ export default class ResText extends Text {
 			}
 		}
 
-		mp.game.ui.setTextEntry("STRING");
+		mp.game.ui.setTextEntry("THREESTRINGS");
 		ResText.AddLongString(caption);
 		mp.game.ui.drawText(x, y);
 	}
 
 	public static AddLongString(str: string) {
-		const strLen = 99;
-		for (var i = 0; i < str.length; i += strLen) {
-			const substr = str.substr(i, Math.min(strLen, str.length - i));
-			mp.game.ui.addTextComponentSubstringPlayerName(substr);
+		if(str.length) {
+			const strLen = 99;
+			/*for(let i = 0; i < str.length; i += strLen) {
+				const substr = str.substr(i, Math.min(strLen, (str.length - i) < strLen ? (str.length - i) : str.lastIndexOf(' ')));
+				mp.game.ui.addTextComponentSubstringPlayerName(substr);
+			}*/
+			let
+				count = 1,
+				lastAddition = strLen,
+				i = 0
+			;
+			while(i < str.length && count <= 3) {
+				lastAddition = str.substr(i, (count * lastAddition)).length >= strLen ? str.substr(i, (count * lastAddition)).lastIndexOf(' ') : str.length;
+				mp.game.ui.addTextComponentSubstringPlayerName(str.substring((count > 1) ? (i + 1) : i, (lastAddition === -1) ? str.length : lastAddition));
+				count++;
+				i += (lastAddition === -1) ? str.length : lastAddition;
+			}
 		}
 	}
 }

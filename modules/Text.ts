@@ -35,7 +35,7 @@ export default class Text extends IElement {
 		mp.game.ui.setTextScale(scale, scale);
 		mp.game.ui.setTextColour(color.R, color.G, color.B, color.A);
 		mp.game.ui.setTextCentre(centered);
-		mp.game.ui.setTextEntry("STRING");
+		mp.game.ui.setTextEntry("THREESTRINGS");
 		ResText.AddLongString(caption);
 		mp.game.ui.drawText(x, y);
 	}

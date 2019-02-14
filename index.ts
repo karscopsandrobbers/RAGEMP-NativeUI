@@ -692,7 +692,7 @@ export default class NativeUI {
 	}
 
 	private FormatDescription(input: string) {
-		const maxPixelsPerLine = 425 + this.WidthOffset;
+		const maxPixelsPerLine = 725 + this.WidthOffset; // 425
 		let aggregatePixels = 0;
 		let output = "";
 		const words = input.split(" ");
