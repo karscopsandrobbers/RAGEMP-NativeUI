@@ -84,9 +84,10 @@ export default class UIMenuListItem extends UIMenuItem {
 		text: string,
 		description: string = "",
 		collection: ItemsCollection = new ItemsCollection([]),
-		startIndex: number = 0
+		startIndex: number = 0,
+		data = null
 	) {
-		super(text, description);
+		super(text, description, data);
 		let y = 0;
 		this.Collection = collection.getListItems();
 		this.Index = startIndex;
