@@ -493,10 +493,6 @@ export default class NativeUI {
 			this.MenuItems.length == 0 ||
 			!this.MouseControlsEnabled
 		) {
-			/*Common.EnableControl(0, GameControl.LookUpDown);
-                Common.EnableControl(0, GameControl.LookLeftRight);
-                Common.EnableControl(0, GameControl.Aim);
-				Common.EnableControl(0, GameControl.Attack);*/
 			this.MenuItems.filter(i => i.Hovered).forEach(i => (i.Hovered = false));
 			return;
 		}
@@ -693,7 +689,7 @@ export default class NativeUI {
 	}
 
 	private FormatDescription(input: string) {
-		const maxPixelsPerLine = 725 + this.WidthOffset; // 425
+		const maxPixelsPerLine = 650 + this.WidthOffset; // 425
 		let aggregatePixels = 0;
 		let output = "";
 		const words = input.split(" ");
