@@ -278,6 +278,10 @@ export default class UIMenuItem {
 				return selected ? "shop_trevor_icon_b" : "shop_trevor_icon_a";
 			case BadgeStyle.Sale:
 				return "saleicon";
+			case BadgeStyle.ArrowLeft:
+				return "arrowleft";
+			case BadgeStyle.ArrowRight:
+				return "arrowright";
 			default:
 				return "";
 		}
