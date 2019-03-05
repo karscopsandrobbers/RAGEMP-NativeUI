@@ -24,7 +24,12 @@ enum BadgeStyle {
 	Tick,
 	Sale,
 	ArrowLeft,
-	ArrowRight
+	ArrowRight,
+	Audio1,
+	Audio2,
+	Audio3,
+	AudioInactive,
+	AudioMute
 }
 
 export default BadgeStyle;

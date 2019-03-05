@@ -223,6 +223,12 @@ export default class UIMenuItem {
 		switch(badge) {
 			case BadgeStyle.Sale:
 				return "mpshopsale";
+			case BadgeStyle.Audio1:
+			case BadgeStyle.Audio2:
+			case BadgeStyle.Audio3:
+			case BadgeStyle.AudioInactive:
+			case BadgeStyle.AudioMute:
+				return "mpleaderboard";
 			default:
 				return "commonmenu";
 		}
@@ -282,6 +288,16 @@ export default class UIMenuItem {
 				return "arrowleft";
 			case BadgeStyle.ArrowRight:
 				return "arrowright";
+			case BadgeStyle.Audio1:
+				return "leaderboard_audio_1";
+			case BadgeStyle.Audio2:
+				return "leaderboard_audio_2";
+			case BadgeStyle.Audio3:
+				return "leaderboard_audio_3";
+			case BadgeStyle.AudioInactive:
+				return "leaderboard_audio_inactive";
+			case BadgeStyle.AudioMute:
+				return "leaderboard_audio_mute";
 			default:
 				return "";
 		}
