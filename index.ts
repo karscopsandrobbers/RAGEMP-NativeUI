@@ -44,8 +44,6 @@ export default class NativeUI {
 
 	public WidthOffset: number = 0;
 
-	public Visible: boolean = true;
-
 	public MouseControlsEnabled: boolean = false;
 
 	private _justOpened: boolean = true;
@@ -69,6 +67,22 @@ export default class NativeUI {
 		| UIMenuListItem
 		| UIMenuSliderItem
 		| UIMenuCheckboxItem)[] = [];
+
+	public _visible: boolean = true;
+
+	get Visible() {
+		return this._visible;
+	}
+	set Visible(toggle: boolean) {
+		if(toggle) {
+			this._justOpened = true;
+			this.MenuOpen.emit();
+		} else {
+			this.RefreshIndex();
+			this.MenuClose.emit();
+		}
+		this._visible = toggle;
+	}
 
 	get CurrentSelection() {
 		return this._activeItem % this.MenuItems.length;
@@ -352,15 +366,11 @@ export default class NativeUI {
 	public Open() {
 		Common.PlaySound(this.AUDIO_BACK, this.AUDIO_LIBRARY);
 		this.Visible = true;
-		this._justOpened = true;
-		this.MenuOpen.emit();
 	}
 
 	public Close() {
 		Common.PlaySound(this.AUDIO_BACK, this.AUDIO_LIBRARY);
 		this.Visible = false;
-		this.RefreshIndex();
-		this.MenuClose.emit();
 	}
 
 	set Subtitle(text: string) {
@@ -431,8 +441,6 @@ export default class NativeUI {
 				const subMenu = this.Children.get(it.Id);
 				this.Visible = false;
 				subMenu.Visible = true;
-				subMenu._justOpened = true;
-				subMenu.MenuOpen.emit();
 				this.MenuChange.emit(subMenu, true);
 			}
 		}
@@ -810,8 +818,6 @@ export default class NativeUI {
 		this.Visible = false;
 		if (this.ParentMenu != null) {
 			this.ParentMenu.Visible = true;
-			this.ParentMenu._justOpened = true;
-			this.ParentMenu.MenuOpen.emit();
 			this.MenuChange.emit(this.ParentMenu, false);
 		}
 		this.MenuClose.emit();
