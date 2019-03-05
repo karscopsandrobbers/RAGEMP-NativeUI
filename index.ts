@@ -547,11 +547,20 @@ export default class NativeUI {
 		for (let i = this._minItem; i <= limit; i++) {
 			let xpos = this.offset.X;
 			let ypos = this.offset.Y + 144 - 37 + this.extraOffset + counter * 38;
+			let yposSelected = this.offset.Y + 144 - 37 + this.extraOffset + this.safezoneOffset.Y + this.CurrentSelection * 38;
 			let xsize = 431 + this.WidthOffset;
 			const ysize = 38;
 			const uiMenuItem = this.MenuItems[i];
 			if (this.IsMouseInBounds(new Point(xpos, ypos), new Size(xsize, ysize))) {
 				uiMenuItem.Hovered = true;
+				const res = this.IsMouseInListItemArrows(
+					this.MenuItems[i],
+					new Point(xpos, ypos),
+					0
+				);
+				if (uiMenuItem.Hovered && res == 1 && this.MenuItems[i] instanceof UIMenuListItem) {
+					mp.game.invoke('0x8DB8CFFD58B62552'.toUpperCase(), 5);
+				}
 				if (
 					mp.game.controls.isControlJustPressed(0, 24) ||
 					mp.game.controls.isDisabledControlJustPressed(0, 24)
@@ -565,11 +574,6 @@ export default class NativeUI {
 								0
 							) > 0
 						) {
-							const res = this.IsMouseInListItemArrows(
-								this.MenuItems[i],
-								new Point(xpos, ypos),
-								0
-							);
 							switch (res) {
 								case 1:
 									Common.PlaySound(this.AUDIO_SELECT, this.AUDIO_LIBRARY);
