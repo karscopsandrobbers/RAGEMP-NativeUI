@@ -207,15 +207,15 @@ export default class UIMenuItem {
 		this._text.Draw();
 	}
 
-	SetLeftBadge(badge: BadgeStyle) {
+	public SetLeftBadge(badge: BadgeStyle) {
 		this.LeftBadge = badge;
 	}
 
-	SetRightBadge(badge: BadgeStyle) {
+	public SetRightBadge(badge: BadgeStyle) {
 		this.RightBadge = badge;
 	}
 
-	SetRightLabel(text: string) {
+	public SetRightLabel(text: string) {
 		this.RightLabel = text;
 	}
 
