@@ -318,6 +318,16 @@ export default class NativeUI {
 		this.RecalculateDescriptionPosition();
 	}
 
+	public RemoveItem(item: UIMenuItem) {
+		for (let i = 0; i < this.MenuItems.length; i++) {
+			if(this.MenuItems[i] === item) {
+				this.MenuItems.splice(i, 1);
+			}
+		}
+		this.RefreshIndex();
+		this.RecalculateDescriptionPosition();
+	}
+
 	public RefreshIndex() {
 		if (this.MenuItems.length == 0) {
 			this._activeItem = 1000;
