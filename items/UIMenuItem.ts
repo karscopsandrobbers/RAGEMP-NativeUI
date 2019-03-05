@@ -220,7 +220,12 @@ export default class UIMenuItem {
 	}
 
 	BadgeToSpriteLib(badge: BadgeStyle) {
-		return "commonmenu";
+		switch(badge) {
+			case BadgeStyle.Sale:
+				return "mpshopsale";
+			default:
+				return "commonmenu";
+		}
 	}
 
 	BadgeToSpriteName(badge: BadgeStyle, selected: boolean) {
@@ -271,6 +276,8 @@ export default class UIMenuItem {
 				return "shop_tick_icon";
 			case BadgeStyle.Trevor:
 				return selected ? "shop_trevor_icon_b" : "shop_trevor_icon_a";
+			case BadgeStyle.Sale:
+				return "saleicon";
 			default:
 				return "";
 		}

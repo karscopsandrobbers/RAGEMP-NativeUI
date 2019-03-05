@@ -21,7 +21,8 @@ enum BadgeStyle {
 	Tatoo,
 	Trevor,
 	Lock,
-	Tick
+	Tick,
+	Sale
 }
 
 export default BadgeStyle;
