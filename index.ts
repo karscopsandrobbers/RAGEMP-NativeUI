@@ -818,6 +818,9 @@ export default class NativeUI {
 	}
 
 	public BindMenuToItem(menuToBind: NativeUI, itemToBindTo: UIMenuItem) {
+		if(!this.MenuItems.includes(itemToBindTo)) {
+			this.AddItem(itemToBindTo);
+		}
 		menuToBind.ParentMenu = this;
 		menuToBind.ParentItem = itemToBindTo;
 		this.Children.set(itemToBindTo.Id, menuToBind);
