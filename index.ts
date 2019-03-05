@@ -78,10 +78,10 @@ export default class NativeUI {
 			this._justOpened = true;
 			this.MenuOpen.emit();
 		} else {
-			this.RefreshIndex();
-			this.MenuClose.emit();
+			mp.game.invoke('0x8DB8CFFD58B62552'.toUpperCase(), 1);
 		}
 		this._visible = toggle;
+		Common.PlaySound(this.AUDIO_BACK, this.AUDIO_LIBRARY);
 	}
 
 	get CurrentSelection() {
@@ -257,6 +257,7 @@ export default class NativeUI {
 			new Point(this.offset.X, 144 + this.offset.Y - 37 + this.extraOffset),
 			new Size(290, 25)
 		);
+		this._visible = false;
 
 		mp.events.add("render", this.render.bind(this));
 		console.log(`Created Native UI! ${this.title}`);
@@ -364,13 +365,13 @@ export default class NativeUI {
 	}
 
 	public Open() {
-		Common.PlaySound(this.AUDIO_BACK, this.AUDIO_LIBRARY);
 		this.Visible = true;
 	}
 
 	public Close() {
-		Common.PlaySound(this.AUDIO_BACK, this.AUDIO_LIBRARY);
 		this.Visible = false;
+		this.RefreshIndex();
+		this.MenuClose.emit();
 	}
 
 	set Subtitle(text: string) {
@@ -818,7 +819,6 @@ export default class NativeUI {
 	}
 
 	public GoBack() {
-		Common.PlaySound(this.AUDIO_BACK, this.AUDIO_LIBRARY);
 		this.Visible = false;
 		if (this.ParentMenu != null) {
 			this.ParentMenu.Visible = true;
