@@ -6,7 +6,7 @@ export default class StringMeasurer {
 		mp.game.ui.setTextEntryForWidth("THREESTRINGS");
 		ResText.AddLongString(input);
 		mp.game.ui.setTextFont(0);
-		mp.game.ui.setTextScale(0.35, 0.35);
+		mp.game.ui.setTextScale(0.35 * 1.25, 0.35);
 		return mp.game.ui.getTextScreenWidth(false);
 	}
 
