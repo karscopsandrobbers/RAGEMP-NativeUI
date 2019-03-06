@@ -3,6 +3,7 @@ import Font from "./enums/Font";
 import UIMenuCheckboxItem from "./items/UIMenuCheckboxItem";
 import UIMenuItem from "./items/UIMenuItem";
 import UIMenuListItem from "./items/UIMenuListItem";
+import UIMenuDynamicListItem from "./items/UIMenuDynamicListItem";
 import UIMenuSliderItem from "./items/UIMenuSliderItem";
 import Container from "./modules/Container";
 import ItemsCollection from "./modules/ItemsCollection";
@@ -65,6 +66,7 @@ export default class NativeUI {
 	public MenuItems: (
 		| UIMenuItem
 		| UIMenuListItem
+		| UIMenuDynamicListItem
 		| UIMenuSliderItem
 		| UIMenuCheckboxItem)[] = [];
 
@@ -102,6 +104,7 @@ export default class NativeUI {
 	// Events
 	public readonly IndexChange = new LiteEvent();
 	public readonly ListChange = new LiteEvent();
+	public readonly DynamicListChange = new LiteEvent();
 	public readonly SliderChange = new LiteEvent();
 	public readonly SliderSelect = new LiteEvent();
 	public readonly CheckboxChange = new LiteEvent();
@@ -382,6 +385,7 @@ export default class NativeUI {
 	public GoLeft() {
 		if (
 			!(this.MenuItems[this.CurrentSelection] instanceof UIMenuListItem) &&
+			!(this.MenuItems[this.CurrentSelection] instanceof UIMenuDynamicListItem) &&
 			!(this.MenuItems[this.CurrentSelection] instanceof UIMenuSliderItem)
 		)
 			return;
@@ -391,20 +395,29 @@ export default class NativeUI {
 			it.Index--;
 			Common.PlaySound(this.AUDIO_LEFTRIGHT, this.AUDIO_LIBRARY);
 			this.ListChange.emit(it, it.Index);
-		} else if (
-			this.MenuItems[this.CurrentSelection] instanceof UIMenuSliderItem
-		) {
+		}
+		else if (this.MenuItems[this.CurrentSelection] instanceof UIMenuDynamicListItem) {
+			const it = <UIMenuDynamicListItem>this.MenuItems[this.CurrentSelection];
+			if (it.SelectedValue <= it.LowerThreshold) {
+				it.SelectedValue = it.UpperThreshold;
+			} else {
+				it.SelectedValue -= it.LeftMoveThreshold;
+			}
+			Common.PlaySound(this.AUDIO_LEFTRIGHT, this.AUDIO_LIBRARY);
+			this.DynamicListChange.emit(it, it.SelectedValue);
+		}
+		else if (this.MenuItems[this.CurrentSelection] instanceof UIMenuSliderItem) {
 			const it = <UIMenuSliderItem>this.MenuItems[this.CurrentSelection];
 			it.Index = it.Index - 1;
 			Common.PlaySound(this.AUDIO_LEFTRIGHT, this.AUDIO_LIBRARY);
 			this.SliderChange.emit(it, it.Index, it.IndexToItem(it.Index));
-			// it.SliderChangedTrigger(it.Index);
 		}
 	}
 
 	public GoRight() {
 		if (
 			!(this.MenuItems[this.CurrentSelection] instanceof UIMenuListItem) &&
+			!(this.MenuItems[this.CurrentSelection] instanceof UIMenuDynamicListItem) &&
 			!(this.MenuItems[this.CurrentSelection] instanceof UIMenuSliderItem)
 		)
 			return;
@@ -414,14 +427,22 @@ export default class NativeUI {
 			it.Index++;
 			Common.PlaySound(this.AUDIO_LEFTRIGHT, this.AUDIO_LIBRARY);
 			this.ListChange.emit(it, it.Index);
-		} else if (
-			this.MenuItems[this.CurrentSelection] instanceof UIMenuSliderItem
-		) {
+		}
+		else if (this.MenuItems[this.CurrentSelection] instanceof UIMenuDynamicListItem) {
+			const it = <UIMenuDynamicListItem>this.MenuItems[this.CurrentSelection];
+			if (it.SelectedValue >= it.UpperThreshold) {
+				it.SelectedValue = it.LowerThreshold;
+			} else {
+				it.SelectedValue += it.RightMoveThreshold;
+			}
+			Common.PlaySound(this.AUDIO_LEFTRIGHT, this.AUDIO_LIBRARY);
+			this.DynamicListChange.emit(it, it.SelectedValue);
+		}
+		else if (this.MenuItems[this.CurrentSelection] instanceof UIMenuSliderItem) {
 			const it = <UIMenuSliderItem>this.MenuItems[this.CurrentSelection];
 			it.Index++;
 			Common.PlaySound(this.AUDIO_LEFTRIGHT, this.AUDIO_LIBRARY);
 			this.SliderChange.emit(it, it.Index, it.IndexToItem(it.Index));
-			// it.SliderChangedTrigger(it.Index);
 		}
 	}
 
@@ -559,7 +580,7 @@ export default class NativeUI {
 					new Point(xpos, ypos),
 					0
 				);
-				if (uiMenuItem.Hovered && res == 1 && this.MenuItems[i] instanceof UIMenuListItem) {
+				if (uiMenuItem.Hovered && res == 1 && (this.MenuItems[i] instanceof UIMenuListItem || this.MenuItems[i] instanceof UIMenuDynamicListItem)) {
 					mp.game.invoke('0x8DB8CFFD58B62552'.toUpperCase(), 5);
 				}
 				if (
@@ -568,7 +589,7 @@ export default class NativeUI {
 				)
 					if (uiMenuItem.Selected && uiMenuItem.Enabled) {
 						if (
-							this.MenuItems[i] instanceof UIMenuListItem &&
+							(this.MenuItems[i] instanceof UIMenuListItem || this.MenuItems[i] instanceof UIMenuDynamicListItem) &&
 							this.IsMouseInListItemArrows(
 								this.MenuItems[i],
 								new Point(xpos, ypos),
@@ -946,6 +967,7 @@ export default class NativeUI {
 exports.Menu = NativeUI;
 exports.UIMenuItem = UIMenuItem;
 exports.UIMenuListItem = UIMenuListItem;
+exports.UIMenuDynamicListItem = UIMenuDynamicListItem;
 exports.UIMenuCheckboxItem = UIMenuCheckboxItem;
 exports.UIMenuSliderItem = UIMenuSliderItem;
 exports.BadgeStyle = BadgeStyle;
