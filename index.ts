@@ -374,7 +374,7 @@ export default class NativeUI {
 	public Close() {
 		this.Visible = false;
 		this.RefreshIndex();
-		this.MenuClose.emit();
+		this.MenuClose.emit(true);
 	}
 
 	set Subtitle(text: string) {
@@ -845,7 +845,7 @@ export default class NativeUI {
 			this.ParentMenu.Visible = true;
 			this.MenuChange.emit(this.ParentMenu, false);
 		}
-		this.MenuClose.emit();
+		this.MenuClose.emit(false);
 	}
 
 	public BindMenuToItem(menuToBind: NativeUI, itemToBindTo: UIMenuItem) {
