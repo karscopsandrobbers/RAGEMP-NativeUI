@@ -106,23 +106,26 @@ export default class ResText extends Text {
 		mp.game.ui.drawText(x, y);
 	}
 
-	public static AddLongString(str: string) {
-		if(str.length) {
-			const strLen = 99;
-			/*for(let i = 0; i < str.length; i += strLen) {
-				const substr = str.substr(i, Math.min(strLen, (str.length - i) < strLen ? (str.length - i) : str.lastIndexOf(' ')));
+	public static AddLongString(text: string) {
+		if(text.length) {
+			const maxStringLength = 99;
+			/*for(let i = 0; i < text.length; i += maxStringLength) {
+				const substr = text.substr(i, Math.min(maxStringLength, (text.length - i) < maxStringLength ? (text.length - i) : text.lastIndexOf(' ')));
 				mp.game.ui.addTextComponentSubstringPlayerName(substr);
 			}*/
-			let
-				count = 1,
-				lastAddition = strLen,
-				i = 0
-			;
-			while(i < str.length && count <= 3) {
-				lastAddition = str.substr(i, (count * lastAddition)).length >= strLen ? str.substr(i, (count * lastAddition)).lastIndexOf(' ') : str.length;
-				mp.game.ui.addTextComponentSubstringPlayerName(str.substring((count > 1) ? (i + 1) : i, (lastAddition === -1) ? str.length : lastAddition));
-				count++;
-				i += (lastAddition === -1) ? str.length : lastAddition;
+			for(let i = 0, position; i < text.length; i += maxStringLength) {
+				let currentText = text.substr(i, i + maxStringLength);
+				let currentIndex = i;
+				if((currentText.match(/~/g)||[]).length % 2 !== 0) {
+					position = currentText.lastIndexOf('~');
+					//if(position > 0 && currentText[position - 1] === ' ') { // Doesn't the substring auto add a space?
+					//	position--;
+					//}
+					i -= (maxStringLength - position);
+				} else {
+					position = Math.min(maxStringLength, text.length - currentIndex);
+				}
+				mp.game.ui.addTextComponentSubstringPlayerName(text.substr(currentIndex, position));
 			}
 		}
 	}
