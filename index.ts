@@ -734,9 +734,9 @@ export default class NativeUI {
 
 	private FormatDescription(input: string) {
 		const maxPixelsPerLine = 650 + this.WidthOffset; // 425
+		const words = input.split(" "); // .replace(/\~(.*?)\~/g, "") - To remove anything between ~...~
 		let aggregatePixels = 0;
 		let output = "";
-		const words = input.split(" ");
 		for (const word of words) {
 			const offset = StringMeasurer.MeasureString(word);
 			aggregatePixels += offset;
@@ -898,11 +898,10 @@ export default class NativeUI {
 				].Description.trim() !== ""
 			) {
 				this.RecalculateDescriptionPosition();
-				let descCaption = this.MenuItems[
+				const descCaption = this.MenuItems[
 					this._activeItem % this.MenuItems.length
 				].Description;
-				// descCaption = this.FormatDescription(descCaption);
-				this._descriptionText.caption = descCaption;
+				this._descriptionText.caption = descCaption; // this.FormatDescription(descCaption);
 				const numLines = this._descriptionText.caption.split("\n").length;
 				this._descriptionRectangle.size = new Size(
 					431 + this.WidthOffset,

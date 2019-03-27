@@ -7,6 +7,7 @@ import Sprite from "../modules/Sprite";
 import Color from "../utils/Color";
 import Point from "../utils/Point";
 import Size from "../utils/Size";
+import StringMeasurer from "../modules/StringMeasurer";
 import UUIDV4 from "../utils/UUIDV4";
 
 export default class UIMenuItem {
@@ -21,6 +22,7 @@ export default class UIMenuItem {
 
 	protected _rectangle: ResRectangle;
 	protected _text: ResText;
+	protected _description: string;
 	protected _selectedSprite: Sprite;
 
 	protected _badgeLeft: Sprite;
@@ -37,7 +39,6 @@ export default class UIMenuItem {
 	public Enabled: boolean;
 	public Selected: boolean;
 	public Hovered: boolean;
-	public Description: string;
 	public Data: any;
 
 	public Offset: Point;
@@ -46,8 +47,35 @@ export default class UIMenuItem {
 	get Text() {
 		return this._text.caption;
 	}
-	set Text(v) {
-		this._text.caption = v;
+	set Text(text) {
+		this._text.caption = text;
+	}
+
+	get Description() {
+		return this._description;
+	}
+	set Description(text) {
+		this._description = text;
+		this.FormatDescription();
+	}
+
+	private FormatDescription() {
+		const maxPixelsPerLine = 650; // 425
+		const words = this._description.split(" "); // .replace(/\~(.*?)\~/g, "") - To remove anything between ~...~
+		let aggregatePixels = 0;
+		let output = "";
+		for (const word of words) {
+			const offset = StringMeasurer.MeasureString(word);
+			aggregatePixels += offset;
+			if (aggregatePixels > maxPixelsPerLine) {
+				output += "\n" + word + " ";
+				aggregatePixels = offset + StringMeasurer.MeasureString(" ");
+			} else {
+				output += word + " ";
+				aggregatePixels += StringMeasurer.MeasureString(" ");
+			}
+		}
+		return output;
 	}
 
 	public RightLabel: string = "";
