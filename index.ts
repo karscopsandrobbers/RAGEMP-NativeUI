@@ -20,6 +20,10 @@ import StringMeasurer from "./modules/StringMeasurer";
 import UUIDV4 from "./utils/UUIDV4";
 import { Screen } from "./utils/Screen";
 
+let
+	menuPool = []
+;
+
 export default class NativeUI {
 	public readonly Id: string = UUIDV4();
 
@@ -38,8 +42,8 @@ export default class NativeUI {
 
 	private extraOffset: number = 0;
 
-	public ParentMenu: NativeUI;
-	public ParentItem: UIMenuItem;
+	public ParentMenu: NativeUI = null;
+	public ParentItem: UIMenuItem = null;
 
 	public Children: Map<string, NativeUI>; // (UUIDV4, NativeUI)
 
@@ -48,6 +52,9 @@ export default class NativeUI {
 	public MouseControlsEnabled: boolean = false;
 
 	private _justOpened: boolean = true;
+	private _justOpenedFromPool: boolean = false;
+	private _justClosedFromPool: boolean = false;
+	private _poolOpening: NativeUI = null;
 
 	private safezoneOffset: Point = new Point(0, 0);
 
@@ -70,20 +77,60 @@ export default class NativeUI {
 		| UIMenuSliderItem
 		| UIMenuCheckboxItem)[] = [];
 
-	public _visible: boolean = true;
+	private _visible: boolean = true;
 
 	get Visible() {
 		return this._visible;
 	}
 	set Visible(toggle: boolean) {
+		this._visible = toggle;
+		Common.PlaySound(this.AUDIO_BACK, this.AUDIO_LIBRARY);
+		/*if(!toggle) {
+			mp.events.callRemote('server:clientDebug', `Visible = false. _justOpenedFromPool: ${this._justOpenedFromPool}`);
+		}*/
+		if(this._justOpenedFromPool === true) {
+			this._justOpenedFromPool = false;
+			return;
+		}
 		if(toggle) {
 			this._justOpened = true;
 			this.MenuOpen.emit();
+			if(this.ParentMenu === null) {
+				if(!menuPool.includes(this) && this !== this._poolOpening) {
+					const previousMenu = (menuPool.length) ? menuPool[menuPool.length - 1] : null;
+					menuPool.push(this);
+					//mp.events.callRemote('server:clientDebug', 'Adding to menu pool ' + menuPool.length);
+					if(previousMenu !== this._poolOpening && previousMenu !== null) {
+						previousMenu._justClosedFromPool = true;
+						previousMenu.Visible = false;
+						//mp.events.callRemote('server:clientDebug', 'Closing current');
+					}
+				}
+			}
 		} else {
-			mp.game.invoke('0x8DB8CFFD58B62552'.toUpperCase(), 1);
+			if(this._justClosedFromPool === true) {
+				this._justClosedFromPool = false;
+				return;
+			}
+			if(this.ParentMenu === null && menuPool.includes(this) && menuPool.length) {
+				if(menuPool[menuPool.length - 1] === this) {
+					menuPool.pop();
+					this._justOpenedFromPool = true;
+					if(!menuPool.length) {
+						this._poolOpening = null;
+					}
+					//mp.events.callRemote('server:clientDebug', 'Removing from menu pool ' + menuPool.length);
+				}
+				if(menuPool.length) {
+					this._poolOpening = menuPool[menuPool.length - 1];
+					menuPool[menuPool.length - 1].Visible = true;
+					//mp.events.callRemote('server:clientDebug', 'Pool opening next in line menu');
+				}
+			}
+			if(menuPool.length === 0) {
+				mp.game.invoke('0x8DB8CFFD58B62552'.toUpperCase(), 1);
+			}
 		}
-		this._visible = toggle;
-		Common.PlaySound(this.AUDIO_BACK, this.AUDIO_LIBRARY);
 	}
 
 	get CurrentSelection() {
