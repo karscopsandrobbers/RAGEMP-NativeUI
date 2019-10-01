@@ -532,7 +532,7 @@ export default class NativeUI {
 		const screenh = Screen.height;
 		const height = 1080.0;
 		const ratio = screenw / screenh;
-		var width = height * ratio;
+		let width = height * ratio;
 
 		return new Size(width, height);
 	}
@@ -554,12 +554,12 @@ export default class NativeUI {
 	) {
 		mp.game.invoke("0x54ce8ac98e120cab".toUpperCase(), "jamyfafi");
 		mp.game.ui.addTextComponentSubstringPlayerName(item.Text);
-		var res = this.GetScreenResolutionMantainRatio();
-		var screenw = res.Width;
-		var screenh = res.Height;
+		let res = this.GetScreenResolutionMantainRatio();
+		let screenw = res.Width;
+		let screenh = res.Height;
 		const height = 1080.0;
 		const ratio = screenw / screenh;
-		var width = height * ratio;
+		let width = height * ratio;
 		const labelSize =
 			mp.game.invoke("0x85f061da64ed2f67".toUpperCase(), 0) * width * 0.35;
 
@@ -653,7 +653,7 @@ export default class NativeUI {
 									this.ItemSelect.emit(this.MenuItems[i], i);
 									break;
 								case 2:
-									var it = <any>this.MenuItems[i];
+									let it = <any>this.MenuItems[i];
 									if (
 										(it.Collection == null
 											? it.Items.Count
@@ -977,7 +977,7 @@ export default class NativeUI {
 		} else {
 			let count = 0;
 			for (let index = this._minItem; index <= this._maxItem; index++) {
-				var item = this.MenuItems[index];
+				let item = this.MenuItems[index];
 				item.SetVerticalPosition(count * 38 - 37 + this.extraOffset);
 				item.Draw();
 				count++;
