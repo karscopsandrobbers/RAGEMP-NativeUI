@@ -433,7 +433,8 @@ export default class NativeUI {
 		if (
 			!(this.MenuItems[this.CurrentSelection] instanceof UIMenuListItem) &&
 			!(this.MenuItems[this.CurrentSelection] instanceof UIMenuDynamicListItem) &&
-			!(this.MenuItems[this.CurrentSelection] instanceof UIMenuSliderItem)
+			!(this.MenuItems[this.CurrentSelection] instanceof UIMenuSliderItem) ||
+			!this.MenuItems[this.CurrentSelection].Enabled
 		)
 			return;
 		if (this.MenuItems[this.CurrentSelection] instanceof UIMenuListItem) {
@@ -465,7 +466,8 @@ export default class NativeUI {
 		if (
 			!(this.MenuItems[this.CurrentSelection] instanceof UIMenuListItem) &&
 			!(this.MenuItems[this.CurrentSelection] instanceof UIMenuDynamicListItem) &&
-			!(this.MenuItems[this.CurrentSelection] instanceof UIMenuSliderItem)
+			!(this.MenuItems[this.CurrentSelection] instanceof UIMenuSliderItem) ||
+			!this.MenuItems[this.CurrentSelection].Enabled
 		)
 			return;
 		if (this.MenuItems[this.CurrentSelection] instanceof UIMenuListItem) {
