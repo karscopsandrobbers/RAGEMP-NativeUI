@@ -14,7 +14,13 @@ export default class ResText extends Text {
 	public TextAlignment: Alignment = Alignment.Left;
 	public DropShadow: boolean;
 	public Outline: boolean;
-	public WordWrap: Size;
+	public Wrap: number = 0;
+	public get WordWrap() {
+		return new Size(this.Wrap, 0);
+	}
+	public set WordWrap(value) {
+		this.Wrap = value.Width;
+	}
 
 	constructor(caption, pos, scale, color?, font?, justify?) {
 		super(
@@ -95,8 +101,8 @@ export default class ResText extends Text {
 					break;
 			}
 
-			if (wordWrap) {
-				const xsize = (this.pos.X + wordWrap.Width) / width;
+			if (this.Wrap) {
+				const xsize = (this.pos.X + this.Wrap) / width;
 				mp.game.ui.setTextWrap(x, xsize);
 			}
 		}
