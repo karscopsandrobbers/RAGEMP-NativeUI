@@ -518,25 +518,6 @@ export default class NativeUI {
 		it.fireEvent();
 	}
 
-	public getMousePosition(relative: boolean = false) {
-		const screenw = Screen.width;
-		const screenh = Screen.height;
-		const cursor = mp.gui.cursor.position;
-		let [mouseX, mouseY] = [cursor[0], cursor[1]];
-		if (relative) [mouseX, mouseY] = [cursor[0] / screenw, cursor[1] / screenh];
-		return [mouseX, mouseY];
-	}
-
-	public IsMouseInBounds(topLeft: Point, boxSize: Size) {
-		const res = Screen.ResolutionMantainRatio();
-		const [mouseX, mouseY] = this.getMousePosition();
-		return (
-			mouseX >= topLeft.X &&
-			mouseX <= topLeft.X + boxSize.Width &&
-			(mouseY > topLeft.Y && mouseY < topLeft.Y + boxSize.Height)
-		);
-	}
-
 	public IsMouseInListItemArrows(
 		item,
 		topLeft,
@@ -555,9 +536,9 @@ export default class NativeUI {
 
 		const labelSizeX = 5 + labelSize + 10;
 		const arrowSizeX = 431 - labelSizeX;
-		return this.IsMouseInBounds(topLeft, new Size(labelSizeX, 38))
+		return Screen.IsMouseInBounds(topLeft, new Size(labelSizeX, 38))
 			? 1
-			: this.IsMouseInBounds(
+			: Screen.IsMouseInBounds(
 					new Point(topLeft.X + labelSizeX, topLeft.Y),
 					new Size(arrowSizeX, 38)
 			  )
@@ -583,7 +564,7 @@ export default class NativeUI {
 			limit = this._maxItem;
 
 		if (
-			this.IsMouseInBounds(new Point(0, 0), new Size(30, 1080)) &&
+			Screen.IsMouseInBounds(new Point(0, 0), new Size(30, 1080)) &&
 			this.MouseEdgeEnabled
 		) {
 			mp.game.cam.setGameplayCamRelativeHeading(
@@ -591,7 +572,7 @@ export default class NativeUI {
 			);
 			mp.game.ui.setCursorSprite(6);
 		} else if (
-			this.IsMouseInBounds(
+			Screen.IsMouseInBounds(
 				new Point(Screen.ResolutionMantainRatio().Width - 30.0, 0),
 				new Size(30, 1080)
 			) &&
@@ -612,7 +593,7 @@ export default class NativeUI {
 			let xsize = 431 + this.WidthOffset;
 			const ysize = 38;
 			const uiMenuItem = this.MenuItems[i];
-			if (this.IsMouseInBounds(new Point(xpos, ypos), new Size(xsize, ysize))) {
+			if (Screen.IsMouseInBounds(new Point(xpos, ypos), new Size(xsize, ysize))) {
 				uiMenuItem.Hovered = true;
 				const res = this.IsMouseInListItemArrows(
 					this.MenuItems[i],
@@ -677,7 +658,7 @@ export default class NativeUI {
 		const extraX = this.safezoneOffset.X + this.offset.X;
 		if (this.MenuItems.length <= this.MaxItemsOnScreen + 1) return;
 		if (
-			this.IsMouseInBounds(
+			Screen.IsMouseInBounds(
 				new Point(extraX, extraY),
 				new Size(431 + this.WidthOffset, 18)
 			)
@@ -694,7 +675,7 @@ export default class NativeUI {
 		} else this._extraRectangleUp.color = new Color(0, 0, 0, 200);
 
 		if (
-			this.IsMouseInBounds(
+			Screen.IsMouseInBounds(
 				new Point(extraX, extraY + 18),
 				new Size(431 + this.WidthOffset, 18)
 			)
