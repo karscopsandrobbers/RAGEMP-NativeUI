@@ -527,18 +527,8 @@ export default class NativeUI {
 		return [mouseX, mouseY];
 	}
 
-	public GetScreenResolutionMantainRatio(): Size {
-		const screenw = Screen.width;
-		const screenh = Screen.height;
-		const height = 1080.0;
-		const ratio = screenw / screenh;
-		let width = height * ratio;
-
-		return new Size(width, height);
-	}
-
 	public IsMouseInBounds(topLeft: Point, boxSize: Size) {
-		const res = this.GetScreenResolutionMantainRatio();
+		const res = Screen.ResolutionMantainRatio();
 		const [mouseX, mouseY] = this.getMousePosition();
 		return (
 			mouseX >= topLeft.X &&
@@ -554,7 +544,7 @@ export default class NativeUI {
 	) {
 		mp.game.invoke("0x54ce8ac98e120cab".toUpperCase(), "jamyfafi");
 		mp.game.ui.addTextComponentSubstringPlayerName(item.Text);
-		let res = this.GetScreenResolutionMantainRatio();
+		let res = Screen.ResolutionMantainRatio();
 		let screenw = res.Width;
 		let screenh = res.Height;
 		const height = 1080.0;
@@ -602,7 +592,7 @@ export default class NativeUI {
 			mp.game.ui.setCursorSprite(6);
 		} else if (
 			this.IsMouseInBounds(
-				new Point(this.GetScreenResolutionMantainRatio().Width - 30.0, 0),
+				new Point(Screen.ResolutionMantainRatio().Width - 30.0, 0),
 				new Size(30, 1080)
 			) &&
 			this.MouseEdgeEnabled
