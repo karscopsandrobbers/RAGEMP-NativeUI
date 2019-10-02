@@ -8,7 +8,7 @@ import Color from "../utils/Color";
 import LiteEvent from "../utils/LiteEvent";
 import Point from "../utils/Point";
 import Size from "../utils/Size";
-import StringMeasurer from "../modules/StringMeasurer";
+import { Screen } from "../utils/Screen";
 import UIMenuItem from "./UIMenuItem";
 
 export default class UIMenuListItem extends UIMenuItem {
@@ -77,7 +77,7 @@ export default class UIMenuListItem extends UIMenuItem {
 			this.Collection.length >= this.Index
 				? this.Collection[this.Index].DisplayText
 				: " ";
-		this.currOffset = StringMeasurer.MeasureString(caption);
+		this.currOffset = Screen.GetTextWidth(caption, this._itemText && this._itemText.font ? this._itemText.font : 0, 0.35); // this._itemText && this._itemText.font ? this._itemText.font : 0, this._itemText && this._itemText.scale ? this._itemText.scale : 0.35
 	}
 
 	constructor(

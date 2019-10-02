@@ -16,7 +16,6 @@ import Common from "./utils/Common";
 import LiteEvent from "./utils/LiteEvent";
 import Point from "./utils/Point";
 import Size from "./utils/Size";
-import StringMeasurer from "./modules/StringMeasurer";
 import UUIDV4 from "./utils/UUIDV4";
 import { Screen } from "./utils/Screen";
 
@@ -62,6 +61,8 @@ export default class NativeUI {
 	private _minItem: number;
 	private _maxItem: number = this.MaxItemsOnScreen;
 
+	private recalculateDescriptionNextFrame: number = 1;
+
 	public AUDIO_LIBRARY: string = "HUD_FRONTEND_DEFAULT_SOUNDSET";
 
 	public AUDIO_UPDOWN: string = "NAV_UP_DOWN";
@@ -88,6 +89,9 @@ export default class NativeUI {
 		/*if(!toggle) {
 			mp.events.callRemote('server:clientDebug', `Visible = false. _justOpenedFromPool: ${this._justOpenedFromPool}`);
 		}*/
+		if(toggle) {
+			this.recalculateDescriptionNextFrame += 2;
+		}
 		if(this._justOpenedFromPool === true) {
 			this._justOpenedFromPool = false;
 			return;
@@ -330,8 +334,7 @@ export default class NativeUI {
 		this._descriptionBar.size = new Size(431 + this.WidthOffset, 4);
 		this._descriptionRectangle.size = new Size(431 + this.WidthOffset, 30);
 
-		let count = this.MenuItems.length;
-		if (count > this.MaxItemsOnScreen + 1) count = this.MaxItemsOnScreen + 2;
+		const count = (this.MenuItems.length > this.MaxItemsOnScreen + 1) ? this.MaxItemsOnScreen + 2 : this.MenuItems.length;
 
 		this._descriptionBar.pos = new Point(
 			this.offset.X,
@@ -377,10 +380,7 @@ export default class NativeUI {
 		);
 		this.MenuItems.push(item);
 
-		item.Description = this.FormatDescription(item.Description);
-
 		this.RefreshIndex();
-		this.RecalculateDescriptionPosition();
 	}
 
 	public RemoveItem(item: UIMenuItem) {
@@ -390,7 +390,6 @@ export default class NativeUI {
 			}
 		}
 		this.RefreshIndex();
-		this.RecalculateDescriptionPosition();
 	}
 
 	public RefreshIndex() {
@@ -407,6 +406,7 @@ export default class NativeUI {
 		this._activeItem = 1000 - (1000 % this.MenuItems.length);
 		this._maxItem = this.MaxItemsOnScreen;
 		this._minItem = 0;
+		this.recalculateDescriptionNextFrame++;
 	}
 
 	public Clear() {
@@ -525,7 +525,7 @@ export default class NativeUI {
 	) {
 		mp.game.invoke("0x54ce8ac98e120cab".toUpperCase(), "jamyfafi");
 		mp.game.ui.addTextComponentSubstringPlayerName(item.Text);
-		let res = Screen.ResolutionMantainRatio();
+		let res = Screen.ResolutionMaintainRatio();
 		let screenw = res.Width;
 		let screenh = res.Height;
 		const height = 1080.0;
@@ -573,7 +573,7 @@ export default class NativeUI {
 			mp.game.ui.setCursorSprite(6);
 		} else if (
 			Screen.IsMouseInBounds(
-				new Point(Screen.ResolutionMantainRatio().Width - 30.0, 0),
+				new Point(Screen.ResolutionMaintainRatio().Width - 30.0, 0),
 				new Size(30, 1080)
 			) &&
 			this.MouseEdgeEnabled
@@ -642,6 +642,7 @@ export default class NativeUI {
 						Common.PlaySound(this.AUDIO_UPDOWN, this.AUDIO_LIBRARY);
 						this.IndexChange.emit(this.CurrentSelection, this.MenuItems[this._activeItem % this.MenuItems.length]);
 						this.SelectItem();
+						this.recalculateDescriptionNextFrame++;
 					} else if (!uiMenuItem.Enabled && uiMenuItem.Selected) {
 						Common.PlaySound(this.AUDIO_ERROR, this.AUDIO_LIBRARY);
 					}
@@ -752,25 +753,6 @@ export default class NativeUI {
 		}
 	}
 
-	private FormatDescription(input: string) {
-		const maxPixelsPerLine = 650 + this.WidthOffset; // 425
-		const words = input.split(" "); // .replace(/\~(.*?)\~/g, "") - To remove anything between ~...~
-		let aggregatePixels = 0;
-		let output = "";
-		for (const word of words) {
-			const offset = StringMeasurer.MeasureString(word);
-			aggregatePixels += offset;
-			if (aggregatePixels > maxPixelsPerLine) {
-				output += "\n" + word + " ";
-				aggregatePixels = offset + StringMeasurer.MeasureString(" ");
-			} else {
-				output += word + " ";
-				aggregatePixels += StringMeasurer.MeasureString(" ");
-			}
-		}
-		return output;
-	}
-
 	public GoUpOverflow() {
 		if (this.MenuItems.length <= this.MaxItemsOnScreen + 1) return;
 		if (this._activeItem % this.MenuItems.length <= this._minItem) {
@@ -803,6 +785,7 @@ export default class NativeUI {
 		}
 		Common.PlaySound(this.AUDIO_UPDOWN, this.AUDIO_LIBRARY);
 		this.IndexChange.emit(this.CurrentSelection, this.MenuItems[this._activeItem % this.MenuItems.length]);
+		this.recalculateDescriptionNextFrame++;
 	}
 
 	public GoUp() {
@@ -812,6 +795,7 @@ export default class NativeUI {
 		this.MenuItems[this._activeItem % this.MenuItems.length].Selected = true;
 		Common.PlaySound(this.AUDIO_UPDOWN, this.AUDIO_LIBRARY);
 		this.IndexChange.emit(this.CurrentSelection, this.MenuItems[this._activeItem % this.MenuItems.length]);
+		this.recalculateDescriptionNextFrame++;
 	}
 
 	public GoDownOverflow() {
@@ -848,6 +832,7 @@ export default class NativeUI {
 		}
 		Common.PlaySound(this.AUDIO_UPDOWN, this.AUDIO_LIBRARY);
 		this.IndexChange.emit(this.CurrentSelection, this.MenuItems[this._activeItem % this.MenuItems.length]);
+		this.recalculateDescriptionNextFrame++;
 	}
 
 	public GoDown() {
@@ -857,6 +842,7 @@ export default class NativeUI {
 		this.MenuItems[this._activeItem % this.MenuItems.length].Selected = true;
 		Common.PlaySound(this.AUDIO_UPDOWN, this.AUDIO_LIBRARY);
 		this.IndexChange.emit(this.CurrentSelection, this.MenuItems[this._activeItem % this.MenuItems.length]);
+		this.recalculateDescriptionNextFrame++;
 	}
 
 	public GoBack() {
@@ -886,6 +872,27 @@ export default class NativeUI {
 		return true;
 	}
 
+	public CalculateDescription() {
+		if(this.recalculateDescriptionNextFrame > 0) {
+			this.recalculateDescriptionNextFrame--;
+		}
+		this.RecalculateDescriptionPosition();
+		if (this.MenuItems.length > 0 && this.MenuItems[this._activeItem % this.MenuItems.length].Description.trim() !== "") {
+			const descCaption = this.MenuItems[this._activeItem % this.MenuItems.length].Description;
+			this._descriptionText.caption = descCaption;
+			this._descriptionText.Wrap = 400;
+			const numLines = Screen.GetLineCount(descCaption, this._descriptionText.pos, this._descriptionText.font, this._descriptionText.scale, 400);
+			
+			this._descriptionRectangle.size = new Size(
+				431 + this.WidthOffset,
+				(numLines * 25) + 15
+			);
+			if(numLines === 0) {
+				this.recalculateDescriptionNextFrame++;
+			}
+		}
+	}
+
 	private render() {
 		if (!this.Visible) return;
 
@@ -898,6 +905,11 @@ export default class NativeUI {
 				this._descriptionRectangle.LoadTextureDictionary();
 			if (!this._upAndDownSprite.IsTextureDictionaryLoaded)
 				this._upAndDownSprite.LoadTextureDictionary();
+			if(!this.recalculateDescriptionNextFrame)
+				this.recalculateDescriptionNextFrame++;
+		}
+		if (this.recalculateDescriptionNextFrame) {
+			this.CalculateDescription();
 		}
 		this._mainMenu.Draw();
 
@@ -912,30 +924,15 @@ export default class NativeUI {
 
 		if (this.MenuItems.length > 0) {
 			this.MenuItems[this._activeItem % this.MenuItems.length].Selected = true;
-			if (
-				this.MenuItems[
-					this._activeItem % this.MenuItems.length
-				].Description.trim() !== ""
-			) {
-				this.RecalculateDescriptionPosition();
-				const descCaption = this.MenuItems[
-					this._activeItem % this.MenuItems.length
-				].Description;
-				this._descriptionText.caption = descCaption; // this.FormatDescription(descCaption);
-				const numLines = this._descriptionText.caption.split("\n").length;
-				this._descriptionRectangle.size = new Size(
-					431 + this.WidthOffset,
-					numLines * 25 + 15
-				);
-
+			if (this.MenuItems[this._activeItem % this.MenuItems.length].Description.trim() !== "") {
 				this._descriptionBar.Draw();
 				this._descriptionRectangle.Draw();
 				this._descriptionText.Draw();
 			}
 		}
 
+		let count = 0;
 		if (this.MenuItems.length <= this.MaxItemsOnScreen + 1) {
-			let count = 0;
 			for (const item of this.MenuItems) {
 				item.SetVerticalPosition(count * 38 - 37 + this.extraOffset);
 				item.Draw();
@@ -946,7 +943,6 @@ export default class NativeUI {
 				this._counterText.Draw();
 			}
 		} else {
-			let count = 0;
 			for (let index = this._minItem; index <= this._maxItem; index++) {
 				let item = this.MenuItems[index];
 				item.SetVerticalPosition(count * 38 - 37 + this.extraOffset);

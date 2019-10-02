@@ -6,7 +6,7 @@ import Color from "../utils/Color";
 import LiteEvent from "../utils/LiteEvent";
 import Point from "../utils/Point";
 import Size from "../utils/Size";
-import StringMeasurer from "../modules/StringMeasurer";
+import { Screen } from "../utils/Screen";
 import UIMenuItem from "./UIMenuItem";
 
 export default class UIMenuDynamicListItem extends UIMenuItem {
@@ -40,7 +40,7 @@ export default class UIMenuDynamicListItem extends UIMenuItem {
 		if (!text) throw new Error("The pre caption text can't be null");
 		if (typeof text !== 'string') throw new Error("The pre caption text must be a string");
 		this._preText = text;
-		this.currOffset = StringMeasurer.MeasureString(this.PreCaptionText + this._value.toString());
+		this.currOffset = Screen.GetTextWidth(this.PreCaptionText + this._value.toString(), this._itemText && this._itemText.font ? this._itemText.font : 0, 0.35); // this._itemText && this._itemText.scale ? this._itemText.scale : 0.35
 	}
 
 	get LeftMoveThreshold() {
@@ -82,7 +82,7 @@ export default class UIMenuDynamicListItem extends UIMenuItem {
 		if(v < this._lowerThreshold || v > this._upperThreshold) throw new Error("The value can not be outside the lower or upper limits");
 		
 		this._value = v;
-		this.currOffset = StringMeasurer.MeasureString(this.PreCaptionText + this._value.toString());
+		this.currOffset = Screen.GetTextWidth(this.PreCaptionText + this._value.toString(), this._itemText && this._itemText.font ? this._itemText.font : 0, this._itemText && this._itemText.scale ? this._itemText.scale : 0.35);
 	}
 
 	private readonly OnDynamicListChange = new LiteEvent();

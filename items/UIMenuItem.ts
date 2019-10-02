@@ -7,7 +7,7 @@ import Sprite from "../modules/Sprite";
 import Color from "../utils/Color";
 import Point from "../utils/Point";
 import Size from "../utils/Size";
-import StringMeasurer from "../modules/StringMeasurer";
+import { Screen } from "../utils/Screen";
 import UUIDV4 from "../utils/UUIDV4";
 
 export default class UIMenuItem {
@@ -56,26 +56,6 @@ export default class UIMenuItem {
 	}
 	set Description(text) {
 		this._description = text;
-		this.FormatDescription();
-	}
-
-	private FormatDescription() {
-		const maxPixelsPerLine = 650; // 425
-		const words = this._description.split(" "); // .replace(/\~(.*?)\~/g, "") - To remove anything between ~...~
-		let aggregatePixels = 0;
-		let output = "";
-		for (const word of words) {
-			const offset = StringMeasurer.MeasureString(word);
-			aggregatePixels += offset;
-			if (aggregatePixels > maxPixelsPerLine) {
-				output += "\n" + word + " ";
-				aggregatePixels = offset + StringMeasurer.MeasureString(" ");
-			} else {
-				output += word + " ";
-				aggregatePixels += StringMeasurer.MeasureString(" ");
-			}
-		}
-		return output;
 	}
 
 	public RightLabel: string = "";
