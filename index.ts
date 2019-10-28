@@ -26,6 +26,8 @@ let
 export default class NativeUI {
 	public readonly Id: string = UUIDV4();
 
+	private _visible: boolean = true;
+
 	private title: string;
 	private subtitle: string;
 	private counterPretext: string = "";
@@ -37,8 +39,6 @@ export default class NativeUI {
 	private lastUpDownNavigation = 0;
 	private lastLeftRightNavigation = 0;
 
-	private _activeItem: number = 1000;
-
 	private extraOffset: number = 0;
 
 	public ParentMenu: NativeUI = null;
@@ -46,6 +46,7 @@ export default class NativeUI {
 
 	public Children: Map<string, NativeUI>; // (UUIDV4, NativeUI)
 
+	private _titleScale: number = 1.15;
 	public WidthOffset: number = 0;
 
 	public MouseControlsEnabled: boolean = false;
@@ -57,11 +58,12 @@ export default class NativeUI {
 
 	private safezoneOffset: Point = new Point(0, 0);
 
+	private _activeItem: number = 1000;
 	private MaxItemsOnScreen: number = 9;
 	private _minItem: number;
 	private _maxItem: number = this.MaxItemsOnScreen;
 
-	private recalculateDescriptionNextFrame: number = 1;
+	public recalculateDescriptionNextFrame: number = 1;
 
 	public AUDIO_LIBRARY: string = "HUD_FRONTEND_DEFAULT_SOUNDSET";
 
@@ -78,7 +80,12 @@ export default class NativeUI {
 		| UIMenuSliderItem
 		| UIMenuCheckboxItem)[] = [];
 
-	private _visible: boolean = true;
+	get TitleScale() {
+		return this._titleScale;
+	}
+	set TitleScale(scale: number) {
+		this._titleScale = scale;
+	}
 
 	get Visible() {
 		return this._visible;
@@ -205,7 +212,7 @@ export default class NativeUI {
 			(this._title = new ResText(
 				this.title,
 				new Point(215 + this.offset.X, 20 + this.offset.Y),
-				1.15,
+				this._titleScale,
 				new Color(255, 255, 255),
 				1,
 				Alignment.Centered

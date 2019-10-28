@@ -56,6 +56,9 @@ export default class UIMenuItem {
 	}
 	set Description(text) {
 		this._description = text;
+		if(this.hasOwnProperty('Parent')) {
+			this.Parent.recalculateDescriptionNextFrame += 1;
+		}
 	}
 
 	public RightLabel: string = "";
