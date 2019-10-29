@@ -65,6 +65,9 @@ export default class UIMenuDynamicListItem extends UIMenuItem {
 	set LowerThreshold(amt) {
 		if (typeof amt !== 'number' && !amt) throw new Error("The lower threshold can't be null");
 		this._lowerThreshold = amt;
+		if(this.SelectedValue < amt) {
+			this.SelectedValue = amt;
+		}
 	}
 
 	get UpperThreshold() {
@@ -73,6 +76,9 @@ export default class UIMenuDynamicListItem extends UIMenuItem {
 	set UpperThreshold(amt) {
 		if (typeof amt !== 'number' && !amt) throw new Error("The upper threshold can't be null");
 		this._upperThreshold = amt;
+		if(this.SelectedValue > amt) {
+			this.SelectedValue = amt;
+		}
 	}
 
 	get SelectedValue() {
