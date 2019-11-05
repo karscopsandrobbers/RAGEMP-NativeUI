@@ -157,6 +157,7 @@ export default class NativeUI {
 			this._maxItem = this.MaxItemsOnScreen + this.CurrentSelection;
 			this._minItem = this.CurrentSelection;
 		}
+		this.UpdateDescriptionCaption();
 	}
 
 	// Events
@@ -304,7 +305,7 @@ export default class NativeUI {
 			new Size(431, 30)
 		);
 		this._descriptionText = new ResText(
-			"Description",
+			"",
 			new Point(this.offset.X + 5, 125),
 			0.35,
 			new Color(255, 255, 255, 255),
@@ -325,6 +326,11 @@ export default class NativeUI {
 	}
 
 	private RecalculateDescriptionPosition() {
+		const count = (this.MenuItems.length > this.MaxItemsOnScreen + 1) ? this.MaxItemsOnScreen + 2 : this.MenuItems.length;
+
+		this._descriptionBar.size = new Size(431 + this.WidthOffset, 4);
+		this._descriptionRectangle.size = new Size(431 + this.WidthOffset, 30);
+
 		this._descriptionBar.pos = new Point(
 			this.offset.X,
 			149 - 37 + this.extraOffset + this.offset.Y
@@ -337,11 +343,6 @@ export default class NativeUI {
 			this.offset.X + 8,
 			155 - 37 + this.extraOffset + this.offset.Y
 		);
-
-		this._descriptionBar.size = new Size(431 + this.WidthOffset, 4);
-		this._descriptionRectangle.size = new Size(431 + this.WidthOffset, 30);
-
-		const count = (this.MenuItems.length > this.MaxItemsOnScreen + 1) ? this.MaxItemsOnScreen + 2 : this.MenuItems.length;
 
 		this._descriptionBar.pos = new Point(
 			this.offset.X,
@@ -649,7 +650,7 @@ export default class NativeUI {
 						Common.PlaySound(this.AUDIO_UPDOWN, this.AUDIO_LIBRARY);
 						this.IndexChange.emit(this.CurrentSelection, this.MenuItems[this._activeItem % this.MenuItems.length]);
 						this.SelectItem();
-						this.recalculateDescriptionNextFrame++;
+						this.UpdateDescriptionCaption();
 					} else if (!uiMenuItem.Enabled && uiMenuItem.Selected) {
 						Common.PlaySound(this.AUDIO_ERROR, this.AUDIO_LIBRARY);
 					}
@@ -792,7 +793,7 @@ export default class NativeUI {
 		}
 		Common.PlaySound(this.AUDIO_UPDOWN, this.AUDIO_LIBRARY);
 		this.IndexChange.emit(this.CurrentSelection, this.MenuItems[this._activeItem % this.MenuItems.length]);
-		this.recalculateDescriptionNextFrame++;
+		this.UpdateDescriptionCaption();
 	}
 
 	public GoUp() {
@@ -802,7 +803,7 @@ export default class NativeUI {
 		this.MenuItems[this._activeItem % this.MenuItems.length].Selected = true;
 		Common.PlaySound(this.AUDIO_UPDOWN, this.AUDIO_LIBRARY);
 		this.IndexChange.emit(this.CurrentSelection, this.MenuItems[this._activeItem % this.MenuItems.length]);
-		this.recalculateDescriptionNextFrame++;
+		this.UpdateDescriptionCaption();
 	}
 
 	public GoDownOverflow() {
@@ -839,7 +840,7 @@ export default class NativeUI {
 		}
 		Common.PlaySound(this.AUDIO_UPDOWN, this.AUDIO_LIBRARY);
 		this.IndexChange.emit(this.CurrentSelection, this.MenuItems[this._activeItem % this.MenuItems.length]);
-		this.recalculateDescriptionNextFrame++;
+		this.UpdateDescriptionCaption();
 	}
 
 	public GoDown() {
@@ -849,7 +850,7 @@ export default class NativeUI {
 		this.MenuItems[this._activeItem % this.MenuItems.length].Selected = true;
 		Common.PlaySound(this.AUDIO_UPDOWN, this.AUDIO_LIBRARY);
 		this.IndexChange.emit(this.CurrentSelection, this.MenuItems[this._activeItem % this.MenuItems.length]);
-		this.recalculateDescriptionNextFrame++;
+		this.UpdateDescriptionCaption();
 	}
 
 	public GoBack() {
@@ -879,17 +880,21 @@ export default class NativeUI {
 		return true;
 	}
 
+	public UpdateDescriptionCaption() {
+		const descCaption = this.MenuItems[this._activeItem % this.MenuItems.length].Description;
+		this._descriptionText.caption = descCaption;
+		this._descriptionText.Wrap = 400;
+		this.recalculateDescriptionNextFrame++;
+	}
+
 	public CalculateDescription() {
 		if(this.recalculateDescriptionNextFrame > 0) {
 			this.recalculateDescriptionNextFrame--;
 		}
 		this.RecalculateDescriptionPosition();
-		if (this.MenuItems.length > 0 && this.MenuItems[this._activeItem % this.MenuItems.length].Description.trim() !== "") {
-			const descCaption = this.MenuItems[this._activeItem % this.MenuItems.length].Description;
-			this._descriptionText.caption = descCaption;
-			this._descriptionText.Wrap = 400;
-			const numLines = Screen.GetLineCount(descCaption, this._descriptionText.pos, this._descriptionText.font, this._descriptionText.scale, 400);
-			
+		if (this.MenuItems.length > 0 && this._descriptionText.caption && this.MenuItems[this._activeItem % this.MenuItems.length].Description.trim() !== "") {
+			const numLines = Screen.GetLineCount(this._descriptionText.caption, this._descriptionText.pos, this._descriptionText.font, this._descriptionText.scale, this._descriptionText.Wrap);
+
 			this._descriptionRectangle.size = new Size(
 				431 + this.WidthOffset,
 				(numLines * 25) + 15
@@ -915,9 +920,6 @@ export default class NativeUI {
 			if(!this.recalculateDescriptionNextFrame)
 				this.recalculateDescriptionNextFrame++;
 		}
-		if (this.recalculateDescriptionNextFrame) {
-			this.CalculateDescription();
-		}
 		this._mainMenu.Draw();
 
 		this.ProcessMouse();
@@ -928,6 +930,10 @@ export default class NativeUI {
 				? new Size(431 + this.WidthOffset, 38 * (this.MaxItemsOnScreen + 1))
 				: new Size(431 + this.WidthOffset, 38 * this.MenuItems.length);
 		this._background.Draw();
+
+		if (this.recalculateDescriptionNextFrame) {
+			this.CalculateDescription();
+		}
 
 		if (this.MenuItems.length > 0) {
 			this.MenuItems[this._activeItem % this.MenuItems.length].Selected = true;
