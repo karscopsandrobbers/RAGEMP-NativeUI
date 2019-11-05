@@ -97,7 +97,7 @@ export default class NativeUI {
 			mp.events.callRemote('server:clientDebug', `Visible = false. _justOpenedFromPool: ${this._justOpenedFromPool}`);
 		}*/
 		if(toggle) {
-			this.recalculateDescriptionNextFrame += 2;
+			this.UpdateDescriptionCaption();
 		}
 		if(this._justOpenedFromPool === true) {
 			this._justOpenedFromPool = false;
