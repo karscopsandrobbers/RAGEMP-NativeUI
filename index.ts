@@ -426,7 +426,13 @@ export default class NativeUI {
 		this.Visible = true;
 	}
 
-	public Close() {
+	public Close(closeChildren: boolean = false) {
+		if(closeChildren) {
+			this.Children.forEach((m) => {
+				m.Close();
+			});
+		}
+
 		this.Visible = false;
 		this.RefreshIndex();
 		this.MenuClose.emit(true);
