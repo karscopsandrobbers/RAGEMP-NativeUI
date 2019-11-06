@@ -887,10 +887,12 @@ export default class NativeUI {
 	}
 
 	public UpdateDescriptionCaption() {
-		const descCaption = this.MenuItems[this._activeItem % this.MenuItems.length].Description;
-		this._descriptionText.caption = descCaption;
-		this._descriptionText.Wrap = 400;
-		this.recalculateDescriptionNextFrame++;
+		if (this.MenuItems.length) {
+			const descCaption = this.MenuItems[this._activeItem % this.MenuItems.length].Description;
+			this._descriptionText.caption = descCaption;
+			this._descriptionText.Wrap = 400;
+			this.recalculateDescriptionNextFrame++;
+		}
 	}
 
 	public CalculateDescription() {
