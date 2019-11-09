@@ -888,8 +888,7 @@ export default class NativeUI {
 
 	public UpdateDescriptionCaption() {
 		if (this.MenuItems.length) {
-			const descCaption = this.MenuItems[this._activeItem % this.MenuItems.length].Description;
-			this._descriptionText.caption = descCaption;
+			this._descriptionText.caption = this.MenuItems[this._activeItem % this.MenuItems.length].Description;
 			this._descriptionText.Wrap = 400;
 			this.recalculateDescriptionNextFrame++;
 		}
