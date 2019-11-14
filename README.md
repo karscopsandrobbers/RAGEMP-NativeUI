@@ -19,5 +19,4 @@ NativeUI for RageMP written in Javascript
 
 * The description and optimization updates for me saved over 20-30 FPS while a menu is open.
 * You might want to be careful with menu pools right now. I haven't went deep into it but for simple menu pools it works GREAT.
-* The GitHub will not match the file here. So please download the file from GitHub (dist/index.ts) or compile it yourself.
 * `MenuClose` event is NOT emitted when Visible is set to false. This is to allow users to reopen menus at it's same state, for e.g searching through a store.
