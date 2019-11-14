@@ -407,14 +407,15 @@ export default class NativeUI {
 			this._minItem = 0;
 			return;
 		}
-
 		for (let i = 0; i < this.MenuItems.length; i++)
 			this.MenuItems[i].Selected = false;
 
 		this._activeItem = 1000 - (1000 % this.MenuItems.length);
 		this._maxItem = this.MaxItemsOnScreen;
 		this._minItem = 0;
-		this.recalculateDescriptionNextFrame++;
+		if(this._visible) {
+			this.UpdateDescriptionCaption();
+		}
 	}
 
 	public Clear() {
