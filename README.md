@@ -6,7 +6,7 @@ NativeUI for RageMP written in Javascript
 1. gulp must be installed globally (`npm install gulp -g`).
 2. `gulp build` to compile nativeui typescript files.
 
-# Contributors
+### Contributors
 
 | Name |
 |:----------:|

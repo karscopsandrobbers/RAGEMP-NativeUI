@@ -90,7 +90,7 @@ export default class NativeUI {
 	get Visible() {
 		return this._visible;
 	}
-	set Visible(toggle: boolean) {
+	set Visible(toggle: boolean) { // Menu pools don't work with submenus
 		this._visible = toggle;
 		Common.PlaySound(this.AUDIO_BACK, this.AUDIO_LIBRARY);
 		/*if(!toggle) {
@@ -429,8 +429,8 @@ export default class NativeUI {
 
 	public Close(closeChildren: boolean = false) {
 		if(closeChildren) {
-			this.Children.forEach((m) => {
-				m.Close();
+			this.Children.forEach(m => {
+				m.Close(true);
 			});
 		}
 
