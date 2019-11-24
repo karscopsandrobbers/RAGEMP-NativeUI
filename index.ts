@@ -427,15 +427,18 @@ export default class NativeUI {
 		this.Visible = true;
 	}
 
-	public Close(closeChildren: boolean = false) {
+	private CleanUp(closeChildren: boolean = false) {
 		if(closeChildren) {
 			this.Children.forEach(m => {
 				m.Close(true);
 			});
 		}
-
-		this.Visible = false;
 		this.RefreshIndex();
+	}
+
+	public Close(closeChildren: boolean = false) {
+		this.Visible = false;
+		this.CleanUp(closeChildren);
 		this.MenuClose.emit(true);
 	}
 
@@ -865,6 +868,8 @@ export default class NativeUI {
 		if (this.ParentMenu != null) {
 			this.ParentMenu.Visible = true;
 			this.MenuChange.emit(this.ParentMenu, false);
+		} else {
+			this.CleanUp(true);
 		}
 		this.MenuClose.emit(false);
 	}

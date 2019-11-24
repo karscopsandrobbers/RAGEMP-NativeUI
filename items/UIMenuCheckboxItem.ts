@@ -9,12 +9,6 @@ import UIMenuItem from "./UIMenuItem";
 export default class UIMenuCheckboxItem extends UIMenuItem {
 	private readonly _checkedSprite: Sprite;
 
-	private readonly OnCheckedChanged = new LiteEvent();
-
-	public get CheckedChanged() {
-		return this.OnCheckedChanged.expose();
-	}
-
 	public Checked: boolean = false;
 
 	constructor(text: string, check: boolean = false, description: string = "") {

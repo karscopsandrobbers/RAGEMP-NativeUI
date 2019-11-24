@@ -53,12 +53,6 @@ export default class UIMenuListItem extends UIMenuItem {
 			: this.SelectedItem.Data;
 	}
 
-	private readonly OnListChanged = new LiteEvent();
-
-	public get ListChanged() {
-		return this.OnListChanged.expose();
-	}
-
 	protected _index: number = 0;
 
 	get Index() {

@@ -91,12 +91,6 @@ export default class UIMenuDynamicListItem extends UIMenuItem {
 		this.currOffset = Screen.GetTextWidth(this.PreCaptionText + this._value.toString(), this._itemText && this._itemText.font ? this._itemText.font : 0, this._itemText && this._itemText.scale ? this._itemText.scale : 0.35);
 	}
 
-	private readonly OnDynamicListChange = new LiteEvent();
-
-	public get DynamicListChange() {
-		return this.OnDynamicListChange.expose();
-	}
-
 	constructor(
 		text: string,
 		description: string = "",
