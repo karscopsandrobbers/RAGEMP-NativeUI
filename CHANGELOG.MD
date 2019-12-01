@@ -1,5 +1,6 @@
 ### Not in any particular order:
 
+* You can now change the title scale of a menu. `Menu.TitleScale` getter, setter.
 * Added `closeChildren: boolean = false` parameter to `menu.Close()`. An optional parameter specifiing whether or not you want to close all children with the menu.
 * Added `UIMenuDynamicListItem`.
 * Descriptions are no longer cut off at 99 characters, but now support 99 * 3.

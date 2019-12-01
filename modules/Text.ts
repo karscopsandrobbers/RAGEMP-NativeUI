@@ -1,7 +1,7 @@
-import Color from "../utils/Color";
-import Point from "../utils/Point";
-import IElement from "./IElement";
-import ResText from "./ResText";
+import Color from '../utils/Color';
+import Point from '../utils/Point';
+import IElement from './IElement';
+import ResText from './ResText';
 
 export default class Text extends IElement {
 	public caption: string;
@@ -10,6 +10,7 @@ export default class Text extends IElement {
 	public color: Color;
 	public font: number;
 	public centered: boolean;
+
 	constructor(caption, pos, scale, color, font, centered) {
 		super();
 		this.caption = caption;
@@ -19,7 +20,7 @@ export default class Text extends IElement {
 		this.font = font || 0;
 		this.centered = centered || false;
 	}
-
+ 
 	Draw(caption, pos, scale, color, font, centered) {
 		if (caption && !pos && !scale && !color && !font && !centered) {
 			pos = new Point(this.pos.X + caption.Width, this.pos.Y + caption.Height);
@@ -35,7 +36,7 @@ export default class Text extends IElement {
 		mp.game.ui.setTextScale(scale, scale);
 		mp.game.ui.setTextColour(color.R, color.G, color.B, color.A);
 		mp.game.ui.setTextCentre(centered);
-		mp.game.ui.setTextEntry("THREESTRINGS");
+		mp.game.ui.setTextEntry('THREESTRINGS');
 		ResText.AddLongString(caption);
 		mp.game.ui.drawText(x, y);
 	}
