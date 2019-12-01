@@ -11,7 +11,7 @@ export default class UIMenuCheckboxItem extends UIMenuItem {
 
 	public Checked: boolean = false;
 
-	constructor(text: string, check: boolean = false, description: string = "") {
+	constructor(text: string, check: boolean = false, description: string = '') {
 		super(text, description);
 		const y = 0;
 		this._checkedSprite = new Sprite(

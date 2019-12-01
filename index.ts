@@ -187,7 +187,7 @@ export default class NativeUI {
 	private readonly _counterText: ResText;
 	private readonly _background: Sprite;
 
-	constructor(title, subtitle, offset, spriteLibrary, spriteName) {
+	constructor(title: string, subtitle: string, offset: Point, spriteLibrary?: string, spriteName?: string) {
 		if (!(offset instanceof Point)) offset = Point.Parse(offset);
 
 		this.title = title;

@@ -93,11 +93,11 @@ export default class UIMenuDynamicListItem extends UIMenuItem {
 
 	constructor(
 		text: string,
-		description: string = "",
+		description: string = '',
 		lowerThreshold: number = 0,
 		upperThreshold: number = 10,
 		startValue: number = 0,
-		data = null
+		data: any = null
 	) {
 		super(text, description, data);
 		let y = 0;
@@ -117,7 +117,7 @@ export default class UIMenuDynamicListItem extends UIMenuItem {
 			new Size(30, 30)
 		);
 		this._itemText = new ResText(
-			"",
+			'',
 			new Point(290, y + 104),
 			0.35,
 			Color.White,

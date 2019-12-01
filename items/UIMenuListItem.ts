@@ -76,10 +76,10 @@ export default class UIMenuListItem extends UIMenuItem {
 
 	constructor(
 		text: string,
-		description: string = "",
+		description: string = '',
 		collection: ItemsCollection = new ItemsCollection([]),
 		startIndex: number = 0,
-		data = null
+		data: any = null
 	) {
 		super(text, description, data);
 		let y = 0;

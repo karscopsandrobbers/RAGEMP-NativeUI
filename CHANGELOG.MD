@@ -3,6 +3,7 @@
 * Added `closeChildren: boolean = false` parameter to `menu.Close()`. An optional parameter specifiing whether or not you want to close all children with the menu.
 * Added `UIMenuDynamicListItem`.
 * Descriptions are no longer cut off at 99 characters, but now support 99 * 3.
+* Descriptions now support wrapping with font colour names, i.e `~HUD_COLOUR_FREEROAM~` will now wrap correctly.
 * `UIMenuListItem` and `UIMenuSliderItem` can now store extra data.
 * Improved description line wrapping.
 * Description caption is now only updated when necessary.

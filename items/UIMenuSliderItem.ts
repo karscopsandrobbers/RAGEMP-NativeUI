@@ -31,7 +31,7 @@ export default class UIMenuSliderItem extends UIMenuItem {
 		index: number,
 		description: string = "",
 		divider: boolean = false,
-		data = null
+		data: any = null
 	) {
 		super(text, description, data);
 		const y: number = 0;

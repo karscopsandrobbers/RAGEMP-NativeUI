@@ -61,11 +61,11 @@ export default class UIMenuItem {
 		}
 	}
 
-	public RightLabel: string = "";
+	public RightLabel: string = '';
 	public LeftBadge: BadgeStyle = BadgeStyle.None;
 	public RightBadge: BadgeStyle = BadgeStyle.None;
 
-	constructor(text, description = "", data = null) {
+	constructor(text: string, description: string = '', data: any = null) {
 		this.Enabled = true;
 		this.Data = data;
 
