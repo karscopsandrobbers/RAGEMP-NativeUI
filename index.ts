@@ -46,7 +46,7 @@ export default class NativeUI {
 
 	public Children: Map<string, NativeUI>; // (UUIDV4, NativeUI)
 
-	private readonly _titleScale: number = 1.15;
+	private readonly _defaultTitleScale: number = 1.15;
 	public WidthOffset: number = 0;
 
 	public MouseControlsEnabled: boolean = false;
@@ -84,6 +84,28 @@ export default class NativeUI {
 	}
 	set TitleScale(scale: number) {
 		this._title.scale = scale;
+	}
+
+	GetTitle(): ResText {
+		return this._title;
+	}
+
+	get TitleText(): string {
+		return this._title.caption;
+	}
+	set TitleText(text: string) {
+		this._title.caption = text;
+	}
+
+	get SubTitle(): ResText {
+		return this._subtitle;
+	}
+
+	get SubTitleText(): string {
+		return this._subtitle.caption;
+	}
+	set SubTitleText(text: string) {
+		this._subtitle.caption = text;
 	}
 
 	get Visible() {
@@ -212,7 +234,7 @@ export default class NativeUI {
 			(this._title = new ResText(
 				this.title,
 				new Point(215 + this.offset.X, 20 + this.offset.Y),
-				this._titleScale,
+				this._defaultTitleScale,
 				new Color(255, 255, 255),
 				1,
 				Alignment.Centered
