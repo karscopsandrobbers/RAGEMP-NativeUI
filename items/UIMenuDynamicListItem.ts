@@ -174,7 +174,7 @@ export default class UIMenuDynamicListItem extends UIMenuItem {
 			: new Color(163, 159, 148);
 
 		this._arrowLeft.pos = new Point(
-			390 - offset + this.Offset.X + this.Parent.WidthOffset, // 375
+			380 - offset + this.Offset.X + this.Parent.WidthOffset, // 375
 			this._arrowLeft.pos.Y
 		);
 
