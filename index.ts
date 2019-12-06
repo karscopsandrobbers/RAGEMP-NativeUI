@@ -26,6 +26,8 @@ let
 export default class NativeUI {
 	public readonly Id: string = UUIDV4();
 
+	static readonly __maxItems: number = 1000;
+
 	private _visible: boolean = true;
 
 	private title: string;
@@ -170,7 +172,7 @@ export default class NativeUI {
 	}
 	set CurrentSelection(v) {
 		this.MenuItems[this._activeItem % this.MenuItems.length].Selected = false;
-		this._activeItem = 1000 - (1000 % this.MenuItems.length) + v;
+		this._activeItem = NativeUI.__maxItems - (NativeUI.__maxItems % this.MenuItems.length) + v;
 		if (this.CurrentSelection > this._maxItem) {
 			this._maxItem = this.CurrentSelection;
 			this._minItem = this.CurrentSelection - this.MaxItemsOnScreen;
@@ -431,7 +433,7 @@ export default class NativeUI {
 		for (let i = 0; i < this.MenuItems.length; i++)
 			this.MenuItems[i].Selected = false;
 
-		this._activeItem = 1000 - (1000 % this.MenuItems.length);
+		this._activeItem = NativeUI.__maxItems - (NativeUI.__maxItems % this.MenuItems.length);
 		this._maxItem = this.MaxItemsOnScreen;
 		this._minItem = 0;
 		if(this._visible) {
@@ -801,7 +803,7 @@ export default class NativeUI {
 				this.MenuItems[
 					this._activeItem % this.MenuItems.length
 				].Selected = false;
-				this._activeItem = 1000 - (1000 % this.MenuItems.length);
+				this._activeItem = NativeUI.__maxItems - (NativeUI.__maxItems % this.MenuItems.length);
 				this._activeItem += this.MenuItems.length - 1;
 				this.MenuItems[
 					this._activeItem % this.MenuItems.length
@@ -849,7 +851,7 @@ export default class NativeUI {
 				this.MenuItems[
 					this._activeItem % this.MenuItems.length
 				].Selected = false;
-				this._activeItem = 1000 - (1000 % this.MenuItems.length);
+				this._activeItem = NativeUI.__maxItems - (NativeUI.__maxItems % this.MenuItems.length);
 				this.MenuItems[
 					this._activeItem % this.MenuItems.length
 				].Selected = true;

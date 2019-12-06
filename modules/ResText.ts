@@ -1,8 +1,8 @@
-import Color from "../utils/Color";
-import Point from "../utils/Point";
-import Size from "../utils/Size";
-import Text from "./Text";
-import { Screen } from "../utils/Screen";
+import Color from '../utils/Color';
+import Point from '../utils/Point';
+import Size from '../utils/Size';
+import Text from './Text';
+import { Screen } from '../utils/Screen';
 
 export enum Alignment {
 	Left,
@@ -89,7 +89,7 @@ export default class ResText extends Text {
 		} else {
 			if (dropShadow) mp.game.ui.setTextDropshadow(2, 0, 0, 0, 0);
 
-			if (outline) console.warn("outline not working!");
+			if (outline) console.warn('outline not working!');
 
 			switch (textAlignment) {
 				case Alignment.Centered:
@@ -107,7 +107,7 @@ export default class ResText extends Text {
 			}
 		}
 
-		mp.game.ui.setTextEntry("THREESTRINGS");
+		mp.game.ui.setTextEntry('CELL_EMAIL_BCON'); // THREESTRINGS
 		ResText.AddLongString(caption);
 		mp.game.ui.drawText(x, y);
 	}

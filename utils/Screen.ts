@@ -1,7 +1,7 @@
-import Font from "../enums/Font";
-import Point from "./Point";
-import Size from "./Size";
-import ResText from "../modules/ResText";
+import Font from '../enums/Font';
+import Point from './Point';
+import Size from './Size';
+import ResText from '../modules/ResText';
 
 const gameScreen = mp.game.graphics.getScreenActiveResolution(0, 0);
 
@@ -37,7 +37,7 @@ export const Screen = {
 
 	GetTextWidth: (text: string, font: Font, scale: number) => {
 		// Start by requesting the game to start processing a width measurement
-		mp.game.ui.setTextEntryForWidth("THREESTRINGS"); // CELL_EMAIL_BCON
+		mp.game.ui.setTextEntryForWidth('CELL_EMAIL_BCON'); // THREESTRINGS
 		// Add the text string
 		ResText.AddLongString(text);
 
@@ -54,7 +54,7 @@ export const Screen = {
 	   
 	GetLineCount: (text: string, position: Point, font: Font, scale: number, wrap: number) => {
 		// Tell the game that we are going to request the number of lines
-		mp.game.ui.setTextGxtEntry("THREESTRINGS"); // CELL_EMAIL_BCON
+		mp.game.ui.setTextGxtEntry('CELL_EMAIL_BCON'); // THREESTRINGS
 		// Add the text that has been sent to us
 		ResText.AddLongString(text);
 

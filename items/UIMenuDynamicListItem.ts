@@ -36,7 +36,7 @@ export default class UIMenuDynamicListItem extends UIMenuItem {
 	get PreCaptionText() {
 		return this._preText;
 	}
-	set PreCaptionText(text) {
+	set PreCaptionText(text: string) {
 		if (!text) throw new Error("The pre caption text can't be null");
 		if (typeof text !== 'string') throw new Error("The pre caption text must be a string");
 		this._preText = text;
@@ -46,7 +46,7 @@ export default class UIMenuDynamicListItem extends UIMenuItem {
 	get LeftMoveThreshold() {
 		return this._leftMoveThreshold;
 	}
-	set LeftMoveThreshold(amt) {
+	set LeftMoveThreshold(amt: number) {
 		if (!amt) throw new Error("The left threshold can't be null");
 		this._leftMoveThreshold = amt;
 	}
@@ -54,7 +54,7 @@ export default class UIMenuDynamicListItem extends UIMenuItem {
 	get RightMoveThreshold() {
 		return this._rightMoveThreshold;
 	}
-	set RightMoveThreshold(amt) {
+	set RightMoveThreshold(amt: number) {
 		if (!amt) throw new Error("The right threshold can't be null");
 		this._rightMoveThreshold = amt;
 	}
@@ -62,32 +62,32 @@ export default class UIMenuDynamicListItem extends UIMenuItem {
 	get LowerThreshold() {
 		return this._lowerThreshold;
 	}
-	set LowerThreshold(amt) {
+	set LowerThreshold(amt: number) {
 		if (typeof amt !== 'number' && !amt) throw new Error("The lower threshold can't be null");
 		this._lowerThreshold = amt;
-		if(this.SelectedValue < amt) {
-			this.SelectedValue = amt;
+		if(this.SelectedValue < this._lowerThreshold) {
+			this.SelectedValue = this._lowerThreshold;
 		}
 	}
 
 	get UpperThreshold() {
 		return this._upperThreshold;
 	}
-	set UpperThreshold(amt) {
+	set UpperThreshold(amt: number) {
 		if (typeof amt !== 'number' && !amt) throw new Error("The upper threshold can't be null");
 		this._upperThreshold = amt;
-		if(this.SelectedValue > amt) {
-			this.SelectedValue = amt;
+		if(this.SelectedValue > this._upperThreshold) {
+			this.SelectedValue = this._upperThreshold;
 		}
 	}
 
 	get SelectedValue() {
 		return this._value;
 	}
-	set SelectedValue(v: number) {
-		if(v < this._lowerThreshold || v > this._upperThreshold) throw new Error("The value can not be outside the lower or upper limits");
+	set SelectedValue(value: number) {
+		if(value < this._lowerThreshold || value > this._upperThreshold) throw new Error("The value can not be outside the lower or upper limits");
 		
-		this._value = v;
+		this._value = value;
 		this.currOffset = Screen.GetTextWidth(this.PreCaptionText + this._value.toString(), this._itemText && this._itemText.font ? this._itemText.font : 0, this._itemText && this._itemText.scale ? this._itemText.scale : 0.35);
 	}
 
@@ -102,7 +102,7 @@ export default class UIMenuDynamicListItem extends UIMenuItem {
 		super(text, description, data);
 		let y = 0;
 		this.LowerThreshold = lowerThreshold;
-		this.UpperThreshold = upperThreshold;
+		this.UpperThreshold = lowerThreshold > upperThreshold ? lowerThreshold : upperThreshold;
 		this.SelectedValue = (startValue < lowerThreshold || startValue > upperThreshold) ? lowerThreshold : startValue;
 		this._arrowLeft = new Sprite(
 			"commonmenu",
