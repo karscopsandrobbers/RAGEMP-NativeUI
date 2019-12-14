@@ -180,6 +180,7 @@ export default class NativeUI {
 			this._maxItem = this.MaxItemsOnScreen + this.CurrentSelection;
 			this._minItem = this.CurrentSelection;
 		}
+		this.IndexChange.emit(this.CurrentSelection, this.MenuItems[this._activeItem % this.MenuItems.length]);
 		this.UpdateDescriptionCaption();
 	}
 
@@ -557,6 +558,16 @@ export default class NativeUI {
 			}
 		}
 		it.fireEvent();
+	}
+
+	public CurrentSelectionHasChildren() {
+		const it = <UIMenuCheckboxItem>this.MenuItems[this.CurrentSelection];
+		if (this.MenuItems[this.CurrentSelection] instanceof UIMenuItem) {
+			if (this.Children.has(it.Id)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public IsMouseInListItemArrows(
