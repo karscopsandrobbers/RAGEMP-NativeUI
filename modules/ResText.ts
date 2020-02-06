@@ -120,8 +120,10 @@ export default class ResText extends Text {
 				mp.game.ui.addTextComponentSubstringPlayerName(substr);
 			}*/
 			for(let i = 0, position; i < text.length; i += maxStringLength) {
-				let currentText = text.substr(i, i + maxStringLength);
-				let currentIndex = i;
+				let
+					currentText = text.substr(i, i + maxStringLength),
+					currentIndex = i
+				;
 				if((currentText.match(/~/g)||[]).length % 2 !== 0) {
 					position = currentText.lastIndexOf('~');
 					//if(position > 0 && currentText[position - 1] === ' ') { // Doesn't the substring auto add a space?
@@ -130,6 +132,10 @@ export default class ResText extends Text {
 					i -= (maxStringLength - position);
 				} else {
 					position = Math.min(maxStringLength, text.length - currentIndex);
+					if(currentText[maxStringLength - 2] === '~') {
+						position -= 2;
+						i -= 2;
+					}
 				}
 				mp.game.ui.addTextComponentSubstringPlayerName(text.substr(currentIndex, position));
 			}
