@@ -114,30 +114,31 @@ export default class ResText extends Text {
 
 	public static AddLongString(text: string) {
 		if(text.length) {
-			const maxStringLength = 99;
-			/*for(let i = 0; i < text.length; i += maxStringLength) {
-				const substr = text.substr(i, Math.min(maxStringLength, (text.length - i) < maxStringLength ? (text.length - i) : text.lastIndexOf(' ')));
-				mp.game.ui.addTextComponentSubstringPlayerName(substr);
-			}*/
-			for(let i = 0, position; i < text.length; i += maxStringLength) {
-				let
-					currentText = text.substr(i, i + maxStringLength),
-					currentIndex = i
-				;
-				if((currentText.match(/~/g)||[]).length % 2 !== 0) {
+			const
+				maxStringLength = 99,
+				splittedArrayOfStrings = []
+			;
+			let
+				i = 0,
+				position,
+				next,
+				currentText
+			;
+			while(i < text.length) {
+				next = (i + maxStringLength) > text.length ? text.length : i + maxStringLength;
+				position = next;
+				currentText = text.substring(i, position);
+				if(((currentText.match(/~/g)||[]).length % 2) !== 0 && (i + maxStringLength) <= text.length) {
 					position = currentText.lastIndexOf('~');
-					//if(position > 0 && currentText[position - 1] === ' ') { // Doesn't the substring auto add a space?
-					//	position--;
-					//}
-					i -= (maxStringLength - position);
+					currentText = text.substring(i, i + position);
+					i = i + position;
 				} else {
-					position = Math.min(maxStringLength, text.length - currentIndex);
-					if(currentText[maxStringLength - 2] === '~') {
-						position -= 2;
-						i -= 2;
-					}
+					i = next;
 				}
-				mp.game.ui.addTextComponentSubstringPlayerName(text.substr(currentIndex, position));
+				splittedArrayOfStrings.push(currentText);
+			}
+			for(const str of splittedArrayOfStrings) {
+				mp.game.ui.addTextComponentSubstringPlayerName(str);
 			}
 		}
 	}
