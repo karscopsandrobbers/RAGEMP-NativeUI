@@ -336,6 +336,7 @@ export default class NativeUI {
 			Font.ChaletLondon,
 			Alignment.Left
 		);
+		this._descriptionText.Wrap = 400;
 
 		this._background = new Sprite(
 			"commonmenu",
@@ -486,6 +487,7 @@ export default class NativeUI {
 			it.Index--;
 			Common.PlaySound(this.AUDIO_LEFTRIGHT, this.AUDIO_LIBRARY);
 			this.ListChange.emit(it, it.Index);
+			this.UpdateDescriptionCaption();
 		}
 		else if (this.MenuItems[this.CurrentSelection] instanceof UIMenuDynamicListItem) {
 			const it = <UIMenuDynamicListItem>this.MenuItems[this.CurrentSelection];
@@ -496,12 +498,14 @@ export default class NativeUI {
 			}
 			Common.PlaySound(this.AUDIO_LEFTRIGHT, this.AUDIO_LIBRARY);
 			this.DynamicListChange.emit(it, it.SelectedValue);
+			this.UpdateDescriptionCaption();
 		}
 		else if (this.MenuItems[this.CurrentSelection] instanceof UIMenuSliderItem) {
 			const it = <UIMenuSliderItem>this.MenuItems[this.CurrentSelection];
 			it.Index = it.Index - 1;
 			Common.PlaySound(this.AUDIO_LEFTRIGHT, this.AUDIO_LIBRARY);
 			this.SliderChange.emit(it, it.Index, it.IndexToItem(it.Index));
+			this.UpdateDescriptionCaption();
 		}
 	}
 
@@ -929,8 +933,6 @@ export default class NativeUI {
 
 	public UpdateDescriptionCaption() {
 		if (this.MenuItems.length) {
-			this._descriptionText.caption = this.MenuItems[this._activeItem % this.MenuItems.length].Description;
-			this._descriptionText.Wrap = 400;
 			this.recalculateDescriptionNextFrame++;
 		}
 	}
@@ -939,6 +941,7 @@ export default class NativeUI {
 		if(this.recalculateDescriptionNextFrame > 0) {
 			this.recalculateDescriptionNextFrame--;
 		}
+		this._descriptionText.caption = this.MenuItems[this._activeItem % this.MenuItems.length].Description;
 		this.RecalculateDescriptionPosition();
 		if (this.MenuItems.length > 0 && this._descriptionText.caption && this.MenuItems[this._activeItem % this.MenuItems.length].Description.trim() !== "") {
 			const numLines = Screen.GetLineCount(this._descriptionText.caption, this._descriptionText.pos, this._descriptionText.font, this._descriptionText.scale, this._descriptionText.Wrap);
