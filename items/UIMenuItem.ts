@@ -287,7 +287,7 @@ export default class UIMenuItem {
 				return selected ? "shop_michael_icon_b" : "shop_michael_icon_a";
 			case BadgeStyle.Star:
 				return "shop_new_star";
-			case BadgeStyle.Tatoo:
+			case BadgeStyle.Tattoo:
 				return selected ? "shop_tattoos_icon_b" : "shop_tattoos_icon_";
 			case BadgeStyle.Tick:
 				return "shop_tick_icon";
