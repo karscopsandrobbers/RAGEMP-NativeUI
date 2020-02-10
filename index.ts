@@ -938,20 +938,22 @@ export default class NativeUI {
 	}
 
 	public CalculateDescription() {
-		if(this.recalculateDescriptionNextFrame > 0) {
-			this.recalculateDescriptionNextFrame--;
-		}
-		this._descriptionText.caption = this.MenuItems[this._activeItem % this.MenuItems.length].Description;
-		this.RecalculateDescriptionPosition();
-		if (this.MenuItems.length > 0 && this._descriptionText.caption && this.MenuItems[this._activeItem % this.MenuItems.length].Description.trim() !== "") {
-			const numLines = Screen.GetLineCount(this._descriptionText.caption, this._descriptionText.pos, this._descriptionText.font, this._descriptionText.scale, this._descriptionText.Wrap);
+		if(this.MenuItems.length > 0) {
+			if(this.recalculateDescriptionNextFrame > 0) {
+				this.recalculateDescriptionNextFrame--;
+			}
+			this._descriptionText.caption = this.MenuItems[this._activeItem % this.MenuItems.length].Description;
+			this.RecalculateDescriptionPosition();
+			if(this._descriptionText.caption && this.MenuItems[this._activeItem % this.MenuItems.length].Description.trim() !== "") {
+				const numLines = Screen.GetLineCount(this._descriptionText.caption, this._descriptionText.pos, this._descriptionText.font, this._descriptionText.scale, this._descriptionText.Wrap);
 
-			this._descriptionRectangle.size = new Size(
-				431 + this.WidthOffset,
-				(numLines * 25) + 15
-			);
-			if(numLines === 0) {
-				this.recalculateDescriptionNextFrame++;
+				this._descriptionRectangle.size = new Size(
+					431 + this.WidthOffset,
+					(numLines * 25) + 15
+				);
+				if(numLines === 0) {
+					this.recalculateDescriptionNextFrame++;
+				}
 			}
 		}
 	}

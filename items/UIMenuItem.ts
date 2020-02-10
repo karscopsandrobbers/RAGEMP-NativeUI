@@ -44,6 +44,10 @@ export default class UIMenuItem {
 	public Offset: Point;
 	public Parent: NativeUI;
 
+	public RightLabel: string = '';
+	public LeftBadge: BadgeStyle = BadgeStyle.None;
+	public RightBadge: BadgeStyle = BadgeStyle.None;
+
 	get Text() {
 		return this._text.caption;
 	}
@@ -60,10 +64,6 @@ export default class UIMenuItem {
 			this.Parent.UpdateDescriptionCaption();
 		}
 	}
-
-	public RightLabel: string = '';
-	public LeftBadge: BadgeStyle = BadgeStyle.None;
-	public RightBadge: BadgeStyle = BadgeStyle.None;
 
 	constructor(text: string, description: string = '', data: any = null) {
 		this.Enabled = true;
