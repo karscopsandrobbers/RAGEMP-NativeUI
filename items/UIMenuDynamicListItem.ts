@@ -38,7 +38,6 @@ export default class UIMenuDynamicListItem extends UIMenuItem {
 		return this._preText;
 	}
 	set PreCaptionText(text: string) {
-		if (!text) throw new Error("The pre caption text can't be null");
 		if (typeof text !== 'string') throw new Error("The pre caption text must be a string");
 		this._preText = text;
 		this.currOffset = Screen.GetTextWidth(this.PreCaptionText + this._value.toString(), this._itemText && this._itemText.font ? this._itemText.font : 0, 0.35); // this._itemText && this._itemText.scale ? this._itemText.scale : 0.35
