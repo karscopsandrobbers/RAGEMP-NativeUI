@@ -7,6 +7,7 @@ import LiteEvent from "../utils/LiteEvent";
 import Point from "../utils/Point";
 import Size from "../utils/Size";
 import { Screen } from "../utils/Screen";
+import { fixFloat } from "../utils/Number";
 import UIMenuItem from "./UIMenuItem";
 
 export default class UIMenuDynamicListItem extends UIMenuItem {
@@ -87,7 +88,7 @@ export default class UIMenuDynamicListItem extends UIMenuItem {
 	set SelectedValue(value: number) {
 		if(value < this._lowerThreshold || value > this._upperThreshold) throw new Error("The value can not be outside the lower or upper limits");
 		
-		this._value = value;
+		this._value = fixFloat(value);
 		this.currOffset = Screen.GetTextWidth(this.PreCaptionText + this._value.toString(), this._itemText && this._itemText.font ? this._itemText.font : 0, this._itemText && this._itemText.scale ? this._itemText.scale : 0.35);
 	}
 
