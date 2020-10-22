@@ -388,10 +388,11 @@ export default class NativeUI {
 		if (this._logo != null) {
 			this._logo.size = new Size(431 + this.WidthOffset, 107);
 		}
-		this._mainMenu.Items[0].pos = new Point(
-			(this.WidthOffset + this.offset.X + 431) / 2,
-			20 + this.offset.Y
-		);
+		//this._mainMenu.Items[0].pos = new Point(
+		//	(this.WidthOffset + this.offset.X + 431) / 2,
+		//	20 + this.offset.Y
+		//);
+		this._mainMenu.Items[0].pos = new Point( 215 + this.offset.X + (this.WidthOffset/2), 20 + this.offset.Y );
 		if (this._counterText) {
 			this._counterText.pos = new Point(
 				425 + this.offset.X + widthOffset,
