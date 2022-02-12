@@ -11,7 +11,7 @@
 		"build": "gulp build"
 	},
 	"dependencies": {
-		"ajv": "^6.8.1"
+		"ajv": "^6.12.3"
 	},
 	"devDependencies": {
 		"@types/node": "^10.12.12",
